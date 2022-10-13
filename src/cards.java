@@ -4,20 +4,23 @@ public class cards {
 
 	public static void main(String[] args) {
 	
-	   String xd = "┌─────────┐", xdd = "│ K       │";
-	
+	   String[] jackOfHearts = {"┌─────────┐","│ J♥      │","│     |   │","│     |   │","│     |   │","│  \\__/   │","│       ♥J│","└─────────┘"};                 
+	   String[] jackOfClubs = {"┌─────────┐","│ J♣      │","│     |   │","│     |   │","│     |   │","│  \\__/   │","│       ♣J│","└─────────┘"};
+	   String[] jackOfSpades = {"┌─────────┐","│ J♠      │","│     |   │","│     |   │","│     |   │","│  \\__/   │","│       ♠J│","└─────────┘"};
+	   String[] jackOfDiamonds = {"┌─────────┐","│ J♦      │","│     |   │","│     |   │","│     |   │","│  \\__/   │","│       ♦J│","└─────────┘"};
 	   
-	   System.out.println(xd);
-	   System.out.println(xdd);
+	   for (int  i = 0; i <= 7; i++)
+	   			System.out.println(jackOfSpades[i]);
 	   
+
 	}
 	
 }
 //┌─────────┐
-//│ K       │
-//│         │
-//│         │
-//│         │
-///│         │
-//│         │
+//│ J♥      │
+//│     |   │
+//│     |   │
+//│     |   │
+//│  \__/   │
+//│       ♥J│
 //└─────────┘
