@@ -1,27 +1,33 @@
 
 // Card value 2 - 10 automatic generation. Char0n
 
+
 public class CardGen {
 
     public static void main(String[] args) {
+
 
         // Take the code of the card from deck array. Array size (52 - 52*x) is set by
         // user.
         // The code should be in the format ValueSuit (ex.: QH (Queen of hearts))
 
+
         String[] exampleDeck = { "2C", "3H", "4S", "5D", "6H", "7S", "8C", "9D", "1D" }; // 1 will be 10, and A will be ace
 
         int cardsToGenerate = exampleDeck.length;
 
+
         // Main program loop
 
-        for (int i = 0; i <= cardsToGenerate; i++) {
+        for (int i = 0; i < cardsToGenerate; i++) {
+
 
             String[] generatedCard = {"   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "};
 
             int[] linesGeneration = {0, 0, 0, 0, 0};
     
             char cardSymb = ' ';
+
 
             // Set the symbol of the card
 
@@ -38,6 +44,7 @@ public class CardGen {
                 break;
 
             }
+
 
             // Start card symbol generation;
 
@@ -69,8 +76,6 @@ public class CardGen {
 
                     symbToDistr -= 2;
                     placedSymb += 2;
-                    
-                    System.out.println("Yes top and bottom");
 
                     continue;
 
@@ -84,8 +89,6 @@ public class CardGen {
 
                     symbToDistr -= 4;
                     placedSymb += 4;
-
-                    System.out.println("Yes placed symbols 4");
 
                     c++;
 
@@ -104,8 +107,7 @@ public class CardGen {
 
                             linesGeneration[j] += 1;
                             symbToDistr--;
-
-                            System.out.println("Yes one between empty lines");
+                            placedSymb++;
 
                             break;
 
@@ -116,12 +118,22 @@ public class CardGen {
 
                             linesGeneration[j] += 1;
 
-                            System.out.println("Yes one between full lines");
-
                             symbToDistr--;
+                            placedSymb++;
                             break;
 
                         }
+
+                        else if(placedSymb == 9 && linesGeneration[j-1] == 2 && linesGeneration[j+1] == 2) // Exception for face value 10, didn't figure out how to generate it automatically
+                        {
+
+                            linesGeneration[j] += 1;
+
+                            symbToDistr--;
+                            placedSymb++;
+                            break;
+
+                        }   
                         
                     }
 
@@ -151,15 +163,15 @@ public class CardGen {
 
             }
 
-            // Add borders and top and bottom symbols for the generated card.
 
+            // Add borders and top and bottom symbols for the generated card.
  
             generatedCard[0] = "╭─────────╮";
             generatedCard[8] = "╰─────────╯";
 
             int faceValue = exampleDeck[i].toCharArray()[0] - '0';
 
-            System.out.println(faceValue);
+            //System.out.println(faceValue);
 
             if(faceValue == 1)
             {
@@ -184,7 +196,8 @@ public class CardGen {
 
             }
 
-            // Code for printing cards side by side
+
+            // Print the cards
 
             for(int j = 0; j < 9; j++)
             {
@@ -193,12 +206,14 @@ public class CardGen {
 
             }
 
-            for(int j = 0; j < 5; j++)
+            /* for(int j = 0; j < 5; j++) Debug loop
             {
 
                 System.out.println(linesGeneration[j]);
 
             }
+
+            */
 
         }
 
