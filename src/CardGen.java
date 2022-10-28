@@ -56,13 +56,15 @@ public class CardGen {
                 int firstLn = 0;
                 int lastLn = 4;
 
-                if(linesGeneration[firstLn] < 2 && linesGeneration[lastLn] < 2 && symbToDistr - 2 > 0)
+                if(linesGeneration[firstLn] < 2 && linesGeneration[lastLn] < 2 && symbToDistr - 2 >= 0)
                 {
 
                     linesGeneration[firstLn] += 1;
                     linesGeneration[lastLn] += 1;
                     
                     symbToDistr -= 2;
+
+                    continue;
 
                 }
 
@@ -72,14 +74,18 @@ public class CardGen {
                     linesGeneration[2] += 2;
                     symbToDistr -= 2;
 
+                    continue;
+
                 }
 
-                if(symbToDistr % 2 == 0 && symbToDistr > 6)
+                if(symbToDistr % 2 == 0 && symbToDistr > 6 && linesGeneration[1] == 0 & linesGeneration[3] == 0)
                 {
 
                     linesGeneration[1] += 2;
                     linesGeneration[3] += 2;
                     symbToDistr -= 4;
+
+                    continue;
 
                 }
 
@@ -97,20 +103,20 @@ public class CardGen {
                     for(int j = 1; j < 4; j++)
                     {
 
-                        if(linesGeneration[j-1] == 0 && linesGeneration[j+1] == 0)
+                        if(linesGeneration[j-1] == 0 && linesGeneration[j+1] == 0 && linesGeneration[j] == 0)
                         {
 
                             linesGeneration[j] += 1;
                             symbToDistr--;
-
+                            break;
                         }
                         
-                        else if(linesGeneration[j-1] == 2 && linesGeneration[j+1] == 2)
+                        else if(linesGeneration[j-1] == 2 && linesGeneration[j+1] == 2 && linesGeneration[j] == 0)
                         {
 
                             linesGeneration[j] += 1;
                             symbToDistr--;
-
+                            break;
                         }
                         
                     }
@@ -179,6 +185,13 @@ public class CardGen {
             {
 
                 System.out.println(generatedCard[j]);
+
+            }
+
+            for(int j = 0; j < 5; j++)
+            {
+
+                System.out.println(linesGeneration[j]);
 
             }
 
