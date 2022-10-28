@@ -50,80 +50,85 @@ public class CardGen {
 
             }
 
+            int firstLn = 0;
+            int lastLn = 4;
+
+            int placedSymb = 0;
+
+            int c = 1;
+
             while(symbToDistr > 0)
             {
-                
-                int firstLn = 0;
-                int lastLn = 4;
 
-                if(linesGeneration[firstLn] < 2 && linesGeneration[lastLn] < 2 && symbToDistr - 2 >= 0)
+                
+                if(linesGeneration[firstLn] < 2 && linesGeneration[lastLn] < 2 && symbToDistr >= 2)
                 {
 
                     linesGeneration[firstLn] += 1;
                     linesGeneration[lastLn] += 1;
+
+                    symbToDistr -= 2;
+                    placedSymb += 2;
                     
-                    symbToDistr -= 2;
+                    System.out.println("Yes top and bottom");
 
                     continue;
 
                 }
 
-                if(symbToDistr % 2 == 0 && symbToDistr <= 6)
+                else if((placedSymb >= 4 && symbToDistr >= 5))
                 {
 
-                    linesGeneration[2] += 2;
-                    symbToDistr -= 2;
+                    linesGeneration[firstLn+c] += 2;
+                    linesGeneration[lastLn-c] += 2;
 
-                    continue;
-
-                }
-
-                if(symbToDistr % 2 == 0 && symbToDistr > 6 && linesGeneration[1] == 0 & linesGeneration[3] == 0)
-                {
-
-                    linesGeneration[1] += 2;
-                    linesGeneration[3] += 2;
                     symbToDistr -= 4;
+                    placedSymb += 4;
+
+                    System.out.println("Yes placed symbols 4");
+
+                    c++;
 
                     continue;
 
                 }
 
-                if(symbToDistr == 10)
-                {
-
-                    linesGeneration[2] += 2;
-                    symbToDistr -= 2;
-
-                }
-
-                if(symbToDistr % 2 != 0) // finds where to place the 1 middle symbol
+                else
                 {
 
                     for(int j = 1; j < 4; j++)
                     {
 
-                        if(linesGeneration[j-1] == 0 && linesGeneration[j+1] == 0 && linesGeneration[j] == 0)
+                        if(linesGeneration[j-1] == 0 && linesGeneration[j+1] == 0 && linesGeneration[j] < 2)
                         {
 
                             linesGeneration[j] += 1;
                             symbToDistr--;
+
+                            System.out.println("Yes one between empty lines");
+
                             break;
+
                         }
                         
-                        else if(linesGeneration[j-1] == 2 && linesGeneration[j+1] == 2 && linesGeneration[j] == 0)
+                        else if(linesGeneration[j-1] == 2 && linesGeneration[j+1] == 2 && linesGeneration[j] < 1)
                         {
 
                             linesGeneration[j] += 1;
+
+                            System.out.println("Yes one between full lines");
+
                             symbToDistr--;
                             break;
+
                         }
                         
                     }
-                    
-                }
+
+                } 
 
             }
+
 
             // Output card in string array form
 
