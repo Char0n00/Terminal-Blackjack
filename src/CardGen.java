@@ -13,17 +13,15 @@ public class CardGen {
 
         int cardsToGenerate = exampleDeck.length;
 
-        String[] generatedCard = new String[9];
-
-        int[] linesGeneration = {0, 0, 0, 0, 0};
-
-        char cardSymb = ' ';
-
         // Main program loop
 
         for (int i = 0; i <= cardsToGenerate; i++) {
 
-            // some code....
+            String[] generatedCard = {"   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "};
+
+            int[] linesGeneration = {0, 0, 0, 0, 0};
+    
+            char cardSymb = ' ';
 
             // Set the symbol of the card
 
@@ -58,7 +56,7 @@ public class CardGen {
                 int firstLn = 0;
                 int lastLn = 4;
 
-                if(linesGeneration[firstLn] == 0 && linesGeneration[lastLn] == 0)
+                if(linesGeneration[firstLn] < 2 && linesGeneration[lastLn] < 2 && symbToDistr - 2 > 0)
                 {
 
                     linesGeneration[firstLn] += 1;
@@ -68,7 +66,7 @@ public class CardGen {
 
                 }
 
-                if(symbToDistr % 2 == 0 && symbToDistr <= 8)
+                if(symbToDistr % 2 == 0 && symbToDistr <= 6)
                 {
 
                     linesGeneration[2] += 2;
@@ -76,12 +74,12 @@ public class CardGen {
 
                 }
 
-                if(symbToDistr % 2 == 0 && symbToDistr >= 8)
+                if(symbToDistr % 2 == 0 && symbToDistr > 6)
                 {
 
                     linesGeneration[1] += 2;
                     linesGeneration[3] += 2;
-                    symbToDistr -= 2;
+                    symbToDistr -= 4;
 
                 }
 
@@ -89,6 +87,7 @@ public class CardGen {
                 {
 
                     linesGeneration[2] += 2;
+                    symbToDistr -= 2;
 
                 }
 
@@ -122,10 +121,10 @@ public class CardGen {
 
             // Output card in string array form
 
+            int alignment = 2;
+
             for(int j = 0; j < 5; j++)
             {
-
-                int alignment = 2;
 
                 switch(linesGeneration[j])
                 {
@@ -149,26 +148,28 @@ public class CardGen {
 
             int faceValue = exampleDeck[i].toCharArray()[0] - '0';
 
+            System.out.println(faceValue);
+
             if(faceValue == 1)
             {
 
-                generatedCard[1] ="|" + "10" + cardSymb + "      |"; 
-                generatedCard[6] ="|" + "     " + cardSymb + "10" + "|";
+                generatedCard[1] ="│" + "10" + cardSymb + "      │"; 
+                generatedCard[7] ="│" + "      " + cardSymb + "10" + "│";
 
             }
 
             else
             {
 
-                generatedCard[1] = "|" + faceValue + cardSymb + "       |";
-                generatedCard[6] = "|" + "       " + cardSymb + faceValue + "|";
+                generatedCard[1] = "│" + faceValue + cardSymb + "       │";
+                generatedCard[7] = "│" + "       " + cardSymb + faceValue + "│";
 
             }
 
-            for(int j = 2; j < 7; j++)
+            for(int j = 2; j <= 6; j++)
             {
 
-                generatedCard[j] = "|" + "  " + generatedCard[j] + "  " + "|";
+                generatedCard[j] = "│" + "   " + generatedCard[j] + "   " + "│";
 
             }
 
