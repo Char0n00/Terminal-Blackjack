@@ -13,13 +13,11 @@ public class CardGen {
 
         int cardsToGenerate = exampleDeck.length;
 
-        String[] generatedCard = {"", " ", " ", " ", " "};
+        String[] generatedCard = new String[9];
 
         int[] linesGeneration = {0, 0, 0, 0, 0};
 
-        boolean lineEmpty = true;
-
-        char cardSymb;
+        char cardSymb = ' ';
 
         // Main program loop
 
@@ -45,17 +43,14 @@ public class CardGen {
 
             // Start card symbol generation;
 
-            // I don't know what this is anymore, soryr
-
-            // Write the code like this:
-            // Add symbol to first line if empty, then last one if empty.
-            //   If even number of symbols to add, add to first and last again.
-            //   If odd number of symbols of add, add to middle line.
-            // If first and last lines have two symbols, and there are even number (but less than 6) of symbols left, add them to middle line.
-            // If first and last lines have two symbols, and there are more than six symbols left, add them to two lines right below the first and right above the last, continue from there.
-            // When this ends, pass the array to a void that centers the symbols in places where there are one, and left and right aligns them where there are two.
-
             int symbToDistr = exampleDeck[i].toCharArray()[0] - '0';
+
+            if(symbToDistr == 1)
+            {
+
+                symbToDistr = 10;
+
+            }
 
             while(symbToDistr > 0)
             {
@@ -73,24 +68,48 @@ public class CardGen {
 
                 }
 
+                if(symbToDistr % 2 == 0 && symbToDistr <= 8)
+                {
+
+                    linesGeneration[2] += 2;
+                    symbToDistr -= 2;
+
+                }
+
+                if(symbToDistr % 2 == 0 && symbToDistr >= 8)
+                {
+
+                    linesGeneration[1] += 2;
+                    linesGeneration[3] += 2;
+                    symbToDistr -= 2;
+
+                }
+
+                if(symbToDistr == 10)
+                {
+
+                    linesGeneration[2] += 2;
+
+                }
+
                 if(symbToDistr % 2 != 0) // finds where to place the 1 middle symbol
                 {
 
                     for(int j = 1; j < 4; j++)
                     {
 
-                        if(linesGeneration[i-1] == 0 && linesGeneration[i+1] == 0)
+                        if(linesGeneration[j-1] == 0 && linesGeneration[j+1] == 0)
                         {
 
-                            linesGeneration[i] += 1;
+                            linesGeneration[j] += 1;
                             symbToDistr--;
 
                         }
                         
-                        else if(linesGeneration[i-1] == 2 && linesGeneration[i+1] == 2)
+                        else if(linesGeneration[j-1] == 2 && linesGeneration[j+1] == 2)
                         {
 
-                            linesGeneration[i] += 1;
+                            linesGeneration[j] += 1;
                             symbToDistr--;
 
                         }
@@ -99,39 +118,71 @@ public class CardGen {
                     
                 }
 
+            }
 
-                if(symbTo)
+            // Output card in string array form
 
+            for(int j = 0; j < 5; j++)
+            {
 
+                int alignment = 2;
+
+                switch(linesGeneration[j])
+                {
+
+                    case 1: generatedCard[alignment] = " " + cardSymb + " ";
+                    break;
+                    case 2: generatedCard[alignment] = cardSymb + " " + cardSymb;
+                    break;
+
+                }
+
+                alignment++;
 
             }
 
             // Add borders and top and bottom symbols for the generated card.
 
+ 
+            generatedCard[0] = "╭─────────╮";
+            generatedCard[8] = "╰─────────╯";
 
+            int faceValue = exampleDeck[i].toCharArray()[0] - '0';
 
-            // Output card in string array form
+            if(faceValue == 1)
+            {
 
+                generatedCard[1] ="|" + "10" + cardSymb + "      |"; 
+                generatedCard[6] ="|" + "     " + cardSymb + "10" + "|";
 
+            }
 
+            else
+            {
+
+                generatedCard[1] = "|" + faceValue + cardSymb + "       |";
+                generatedCard[6] = "|" + "       " + cardSymb + faceValue + "|";
+
+            }
+
+            for(int j = 2; j < 7; j++)
+            {
+
+                generatedCard[j] = "|" + "  " + generatedCard[j] + "  " + "|";
+
+            }
 
             // Code for printing cards side by side
+
+            for(int j = 0; j < 9; j++)
+            {
+
+                System.out.println(generatedCard[j]);
+
+            }
 
         }
 
     }
 
 }
-
-// Suits - Hearts, Diamonds, Spades, Clubs
-
-┌───────── ╮
-│Q♥        │
-│  ╭──╮    │
-│  │  │    │
-│  │  │    |
-|  |  │    |
-|  |  |    |
-│  ╰──╲    │
-|        ♥Q│
-└─────────┘
