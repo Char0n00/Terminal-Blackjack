@@ -1,7 +1,6 @@
 
 // Card value 2 - 10 automatic generation. Char0n
 
-
 public class CardGen {
 
     public static void main(String[] args) {
