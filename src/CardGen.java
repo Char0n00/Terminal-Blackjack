@@ -101,8 +101,8 @@ public class CardGen {
                     for(int j = 1; j < 4; j++)
                     {
 
-                        if(linesGeneration[j-1] == 0 && linesGeneration[j+1] == 0 && linesGeneration[j] < 2)
-                        {
+                        if(linesGeneration[j-1] == 0 && linesGeneration[j+1] == 0 && linesGeneration[j] < 2) // Case if the lone symbol need to be in the middle of the card
+                        {                                                                                   // for example in 3 and 5, but it is also how 6 is generated
 
                             linesGeneration[j] += 1;
                             symbToDistr--;
@@ -112,8 +112,8 @@ public class CardGen {
 
                         }
                         
-                        else if(linesGeneration[j-1] == 2 && linesGeneration[j+1] == 2 && linesGeneration[j] < 1)
-                        {
+                        else if(linesGeneration[j-1] == 2 && linesGeneration[j+1] == 2 && linesGeneration[j] < 1) //  Case if the lone symbol needs to be in between two full lines
+                        {                                                                                         // for example in 7, 8, 9
 
                             linesGeneration[j] += 1;
 
