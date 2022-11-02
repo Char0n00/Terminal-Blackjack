@@ -6,12 +6,19 @@ public class TerminalBlackjack {
 
 	public static void main(String[] args) {
 
+        System.out.println();
         System.out.println("Welcome to Blackjack, but a worse terminal version and written in Java.");
-        System.out.println("Created by: char0n00 and Tomukas10");   
+        System.out.println("Created by: char0n00 and Tomukas10" + '\n' + '\n');  
         
         Scanner input = new Scanner(System.in);
 
         int chips = 1000; // Placeholder for betting
+
+        int bet;
+
+        boolean inputSucceeded = false;
+
+        int deckCount;
 
         String[] deck = {
             
@@ -22,16 +29,52 @@ public class TerminalBlackjack {
 
         }; // a deck preset to be merged into usedDeck array.
 
-        System.out.println("Please select the number of shoes (decks) that will be used this game:"); 
+        // Deck count input with error management
+
+        while(true)
+        {
+
+            try
+            {
+
+                System.out.println("Please select the number of shoes (decks) that will be used this game (Usually, 4 decks are used):"); 
+                deckCount = input.nextInt();
+
+            }
+            catch(Exception InputMismatchException)
+            {
+
+                System.out.println();
+                System.out.println("You can only enter whole numbers as number of decks.");
+                input = new Scanner(System.in);
+                continue;
+
+            }
+
+            break;
+
+        }
+
+
+        String[] usedDeck = new String[deckCount*52];
+
+        // Creating array of cards with the chosen number of decks and pasting it to originalDeck, to be used when cards run out of the shoe.
+
+        /*for(int ii = 0; i < shoeNumber)
+
+            for(int i = 0; i < shoeNumber; i++)
+            {
+
+                for(int j = 0; j < shoe)
+
+            }
+
+        //main game loop.
         
-        int shoeNumber = input.nextInt();
-
-        String[] usedDeck = new String[shoeNumber];
-
         do
         {
 
-            System.out.println("Enter");
+            System.out.println("Enter your bet");
 
 
 
@@ -40,7 +83,13 @@ public class TerminalBlackjack {
         }
         while(!input.toLowerCase.equals("q"));
 
-        System.out.println("");
+        // Function that chooses a random card from the deck, returns its face value and initials, and then removes the card from the deck
+
+        // Function that deals the cards up until the first choice to be made to the player - to the dealer, the player, the dealer, and again the player, and returns those cards
+
+
+
+        System.out.println("");*/
 
     
     
