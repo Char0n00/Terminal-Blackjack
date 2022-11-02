@@ -27,7 +27,9 @@ public class TerminalBlackjack {
 
         int deckCount;
 
-        String playerChoice;
+        String playerChoice = new String();
+
+        int[] drawnCardParameters;
 
         String[] deck = {
             
@@ -90,39 +92,18 @@ public class TerminalBlackjack {
 
         }
 
+        // These are saved for later when the shoe runs out of cards.
+
         String[] originalDeck = usedDeck.clone(); 
         int originalSize = cardsInShoe;
+
 
         //main game loop.
         
         do
         {
 
-            while(true)
-            {
-                
-                System.out.println("You have " + " and the dealer has " + '\n' + "Do you (s)tand, (d)raw a card, (d)ouble (d)own or (sp)lit?");
-                playerChoice = input.next();
-
-                playerChoice = playerChoice.toLowerCase();
-
-                System.out.println(playerChoice);
-
-                if(!playerChoice.equals("s") && !playerChoice.equals("d") && !playerChoice.equals("dd") && !playerChoice.equals("sp") && !playerChoice.equals("q"))
-                {
-
-                    System.out.println();
-                    System.out.println("Please input one of the given choices.");
-                    playerChoice = new String();
-                    continue;
-
-                }
-
-                System.out.println();
-
-                break;
-
-            }
+            Boolean gameOver = false;
 
             while(true)
             {
@@ -130,7 +111,7 @@ public class TerminalBlackjack {
                 try
                 {
 
-                    System.out.println("You currently have " + ownedChips + "Please enter your bet: ");
+                    System.out.println("You currently have " + ownedChips + " chips." + "Please enter your bet: ");
                     bet = input.nextInt();
 
                 }
@@ -147,12 +128,53 @@ public class TerminalBlackjack {
 
             }
 
+            while(!gameOver)
+            {
+
+                drawnCardParameters = randomCard(usedDeck, cardsInShoe);
+
+                while(true)
+                {
+                    
+                    try
+                    {
+
+                        System.out.println("You have " + " and the dealer has " + '\n' + "Do you (s)tand, (d)raw a card, (d)ouble (d)own or (sp)lit?");
+                        playerChoice = input.next();
+    
+                    }
+                    catch(Exception InputMismatchException)
+                    {
+
+                        System.out.println("Please input a choice in the form of a letter.");
+                        input = new Scanner(System.in);
+
+                    }
+
+                    playerChoice = playerChoice.toLowerCase();
+        
+                    System.out.println(playerChoice);
+    
+                    if(!playerChoice.equals("s") && !playerChoice.equals("d") && !playerChoice.equals("dd") && !playerChoice.equals("sp") && !playerChoice.equals("q"))
+                    {
+    
+                        System.out.println();
+                        System.out.println("Please input one of the given choices.");
+                        playerChoice = new String();
+                        continue;
+    
+                    }
+
+                    System.out.println();
+    
+                    break;
+    
+                }
+
+            }
+
         }
         while(!playerChoice.equals("q"));
-
-        // Function that deals the cards up until the first choice to be made to the player - to the dealer, the player, the dealer, and again the player, and returns those cards
-
-
 
         
 
@@ -202,5 +224,7 @@ public class TerminalBlackjack {
     }
 
     // Function to remove card from deck
+
+    // Function that deals the cards up until the first choice to be made to the player - to the dealer, the player, the dealer, and again the player, and returns those cards
 
 }
