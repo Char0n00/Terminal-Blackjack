@@ -1,6 +1,5 @@
 import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 
 // Main program file with the main game loop.
@@ -133,6 +132,8 @@ public class TerminalBlackjack {
 
                 drawnCardParameters = randomCard(usedDeck, cardsInShoe);
 
+                System.out.println(drawnCardParameters[0] + " " + drawnCardParameters[1]);
+
                 while(true)
                 {
                     
@@ -200,6 +201,7 @@ public class TerminalBlackjack {
 
             case 'A': faceValue = 11;
             break;
+            case '1':
             case 'J':
             case 'K':
             case 'Q': faceValue = 10;
@@ -211,7 +213,7 @@ public class TerminalBlackjack {
             case '6':
             case '7':
             case '8':
-            case '9': faceValue = usedDeck[randomIndex].toCharArray()[0];
+            case '9': faceValue = usedDeck[randomIndex].toCharArray()[0] - '0';
             break;
 
         }
@@ -220,6 +222,31 @@ public class TerminalBlackjack {
         drawnCard[1] = faceValue;
 
         return drawnCard;
+
+    }
+
+    public static int[] cardRemoval(String[] usedDeck, int cardsInShoe, int[] drawnCardParameters)
+    {
+
+        int[] newDeck = new int[cardsInShoe-1];
+
+        int c = 0;
+
+        for(int i = 0; i < cardsInShoe; i++)
+        {
+
+            if(i != drawnCardParameters[0])
+            {
+
+                newDeck[c] = usedDeck[i];
+
+                c++;
+
+            }
+
+        }
+
+        return newDeck; 
 
     }
 
