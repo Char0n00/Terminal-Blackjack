@@ -245,6 +245,9 @@ public class TerminalBlackjack {
     }
 
 
+
+    daijdasljdakl
+
     // Function that deals the cards up until the first choice to be made to the player - to the dealer, the player, the dealer, and again the player, and returns those cards
 
     
