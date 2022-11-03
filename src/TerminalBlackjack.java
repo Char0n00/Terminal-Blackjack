@@ -225,33 +225,28 @@ public class TerminalBlackjack {
 
     }
 
-    public static int[] cardRemoval(String[] usedDeck, int cardsInShoe, int[] drawnCardParameters)
-    {
-
-        int[] newDeck = new int[cardsInShoe-1];
-
-        int c = 0;
-
-        for(int i = 0; i < cardsInShoe; i++)
-        {
-
-            if(i != drawnCardParameters[0])
-            {
-
-                newDeck[c] = usedDeck[i];
-
-                c++;
-
-            }
-
-        }
-
-        return newDeck; 
-
-    }
 
     // Function to remove card from deck
 
+    public static String[] cardRemoval(String[] usedDeck, int cardsInShoe, int[] drawnCardParameters)
+    {
+
+        usedDeck[drawnCardParameters[0]] = usedDeck[cardsInShoe-1];
+
+        return usedDeck; // need to add "cardsInShoe--;" after calling this function
+
+    }
+
+    public static String[] cardDealing()
+    {
+
+        return null;
+
+    }
+
+
     // Function that deals the cards up until the first choice to be made to the player - to the dealer, the player, the dealer, and again the player, and returns those cards
+
+    
 
 }
