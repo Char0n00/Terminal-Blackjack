@@ -1,6 +1,6 @@
+
 import java.util.Random;
 import java.util.Scanner;
-
 
 // Main program file with the main game loop.
 
@@ -21,8 +21,6 @@ public class TerminalBlackjack {
         int ownedChips = 1000; // Placeholder for betting
 
         int bet = 0;
-
-        boolean inputSucceeded = false;
 
         int deckCount;
 
@@ -106,6 +104,8 @@ public class TerminalBlackjack {
 
             while(true)
             {
+
+                
 
                 try
                 {
@@ -237,19 +237,21 @@ public class TerminalBlackjack {
 
     }
 
-    public static String[] cardDealing()
-    {
-
-        return null;
-
-    }
-
-
-
-    daijdasljdakl
 
     // Function that deals the cards up until the first choice to be made to the player - to the dealer, the player, the dealer, and again the player, and returns those cards
 
+    public static String[] cardDealing(String[] usedDeck, int cardsInShoe, int[] drawnCardParameters, int amountToDeal)
+    {
+
+        drawnCardParameters = randomCard(usedDeck, cardsInShoe);
+
+        
+
+        String[] plHand = new String[cards];
+
+    }
+
+    
     
 
 }
