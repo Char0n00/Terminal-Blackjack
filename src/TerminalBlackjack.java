@@ -35,7 +35,7 @@ public class TerminalBlackjack {
             "AH", "2H", "3H", "4H", "5H", "6H", "7H", "8H", "9H", "1H", "JH", "QH", "KH",
             "AD", "2D", "3D", "4D", "5D", "6D", "7D", "8D", "9D", "1D", "JD", "QD", "KD",
             "AS", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "1S", "JS", "QS", "KS", 
-            "AC", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "1C", "JC", "QC", "KC",
+            "AC", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "1C", "JC", "QC", "KC"
 
         }; // a deck preset to be merged into usedDeck array.
 
@@ -47,7 +47,7 @@ public class TerminalBlackjack {
             try
             {
 
-                System.out.println("Please select the number of shoes (decks) that will be used this game (Usually, 4 decks are used):"); 
+                System.out.println("Please select the number of decks that will be used this game (Usually, 4 decks are used):"); 
                 deckCount = input.nextInt();
 
             }
@@ -101,6 +101,8 @@ public class TerminalBlackjack {
 
         }
 
+        usedDeck = shuffle(usedDeck, cardsInShoe);
+
         // These are saved for later when the shoe is shuffled.
 
         String[] originalDeck = usedDeck.clone(); 
@@ -109,6 +111,7 @@ public class TerminalBlackjack {
         Random ran = new Random();
 
         int shufflePercent = ran.nextInt(20) + 40; // Decides when to shuffle decks for each game. Casinos usually shuffle multi deck games when 40-60% of cards remain.
+        // If one deck is used, it is shuffled every game.
 
 
         //main game loop.
@@ -166,7 +169,7 @@ public class TerminalBlackjack {
 
                 plHandValue += drawnCardParameters[1];
 
-                usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters);
+                usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters[0]);
 
                 cardsInShoe--; // Required after calling cardRemoval
 
@@ -178,7 +181,7 @@ public class TerminalBlackjack {
 
                 dlHandValue += drawnCardParameters[1];
 
-                usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters);
+                usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters[0]);
 
                 cardsInShoe--;
 
@@ -254,8 +257,9 @@ public class TerminalBlackjack {
         input.close();
     
     }
+    
 
-    // Function that chooses a random card from the shoe, returns its face value and initials, and then removes the card from the deck
+    // Function that chooses a random card from the shoe, returns its face value and initials
     
     public static int[] randomCard(String[] usedDeck, int cardsInShoe)
     {
@@ -300,16 +304,42 @@ public class TerminalBlackjack {
 
     // Function to remove card from deck
 
-    public static String[] cardRemoval(String[] usedDeck, int cardsInShoe, int[] drawnCardParameters)
+    public static String[] cardRemoval(String[] usedDeck, int cardsInShoe, int drawnCardIndex)
     {
 
-        usedDeck[drawnCardParameters[0]] = usedDeck[cardsInShoe-1];
+        usedDeck[drawnCardIndex] = usedDeck[cardsInShoe-1];
 
         return usedDeck; // need to add "cardsInShoe--;" after calling this function
 
     }
 
 
-    // Function that deals the cards up until the first choice to be made to the player - to the dealer, the player, the dealer, and again the player, and returns those cards
+    // Function to shuffle deck
+
+    public static String[] shuffle(String[] usedDeck, int cardsInShoe)
+    {
+
+        String[] temporaryDeck = new String[cardsInShoe];
+
+        Random ran = new Random();
+
+        int index = 0;
+
+        for(int i = cardsInShoe-1; i > 0; i--)
+        {
+
+            index = ran.nextInt(i);
+
+            temporaryDeck[i] = usedDeck[index];
+
+            usedDeck = cardRemoval(usedDeck, i+1, index); // Shoe size "i" is +1 because otherwise the index is wrong in cardRemoval function
+
+        }
+
+        temporaryDeck[0] = usedDeck[0];
+
+        return temporaryDeck;
+
+    }
 
 }
