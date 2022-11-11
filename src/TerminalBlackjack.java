@@ -28,6 +28,8 @@ public class TerminalBlackjack {
 
         int[] drawnCardParameters;
 
+        boolean gameOver = false;
+
         String[] deck = {
             
             "AH", "2H", "3H", "4H", "5H", "6H", "7H", "8H", "9H", "1H", "JH", "QH", "KH",
@@ -67,6 +69,16 @@ public class TerminalBlackjack {
 
         String[] usedDeck = new String[cardsInShoe];
 
+        String[] plHand = new String[cardsInShoe];
+        String[] dlHand = new String[cardsInShoe];
+
+        int plHandValue;   
+        int dlHandValue;
+
+        int plHandCount;
+        int dlHandCount;
+
+
         // Creating array of cards with the chosen number of decks and pasting it to originalDeck, to be used when cards run out of the shoe.
 
         int index = 1;
@@ -89,24 +101,37 @@ public class TerminalBlackjack {
 
         }
 
-        // These are saved for later when the shoe runs out of cards.
+        // These are saved for later when the shoe is shuffled.
 
         String[] originalDeck = usedDeck.clone(); 
         int originalSize = cardsInShoe;
+
+        Random ran = new Random();
+
+        int shufflePercent = ran.nextInt(20) + 40; // Decides when to shuffle decks for each game. Casinos usually shuffle multi deck games when 40-60% of cards remain.
 
 
         //main game loop.
         
         do
-        {
+        {   
+            
+            gameOver = false;
 
-            Boolean gameOver = false;
+            // Reset player and dealer hands
+
+            plHandValue = 0;
+            dlHandValue = 0;
+
+            plHand = new String[cardsInShoe];
+            dlHand = new String[cardsInShoe];
+
+            plHandCount = 0;
+            dlHandCount = 0;
 
             while(true)
             {
-
-                
-
+        
                 try
                 {
 
@@ -124,6 +149,45 @@ public class TerminalBlackjack {
                 }
 
                 break;
+
+            }
+
+
+            // Loop that deals the first cards
+
+            for(int i = 0; i < 2; i++)
+            {
+
+                drawnCardParameters = randomCard(usedDeck, cardsInShoe);
+
+                plHand[i] = usedDeck[drawnCardParameters[0]];
+
+                plHandCount++;
+
+                plHandValue += drawnCardParameters[1];
+
+                usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters);
+
+                cardsInShoe--; // Required after calling cardRemoval
+
+                drawnCardParameters = randomCard(usedDeck, cardsInShoe);
+
+                dlHand[i] = usedDeck[drawnCardParameters[0]];
+
+                dlHandCount++;
+
+                dlHandValue += drawnCardParameters[1];
+
+                usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters);
+
+                cardsInShoe--;
+
+                if(plHandValue == 21)
+                {
+
+
+
+                }
 
             }
 
@@ -171,6 +235,14 @@ public class TerminalBlackjack {
                     break;
     
                 }
+
+            }
+            
+
+            if(shufflePercent == cardsInShoe/originalSize*100)
+            {
+
+
 
             }
 
@@ -239,19 +311,5 @@ public class TerminalBlackjack {
 
 
     // Function that deals the cards up until the first choice to be made to the player - to the dealer, the player, the dealer, and again the player, and returns those cards
-
-    public static String[] cardDealing(String[] usedDeck, int cardsInShoe, int[] drawnCardParameters, int amountToDeal)
-    {
-
-        drawnCardParameters = randomCard(usedDeck, cardsInShoe);
-
-        
-
-        String[] plHand = new String[cards];
-
-    }
-
-    
-    
 
 }
