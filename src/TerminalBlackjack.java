@@ -13,7 +13,7 @@ public class TerminalBlackjack {
         System.out.println();
         System.out.println("Welcome to Blackjack, but a worse terminal version and written in Java.");
         System.out.println("Created by: char0n00 and Tomukas10 \n") ;  
-        System.out.println("You can type \"q\" at any time to exit. \n");
+        System.out.println("Win payout is 1:1. Blackjack payout is 2:1. Dealer stands on 17. \n You can type \"q\" at any time to exit. \n");
 
 
         Scanner input = new Scanner(System.in);
@@ -26,10 +26,10 @@ public class TerminalBlackjack {
 
         String playerChoice = new String();
 
-        int[] drawnCardParameters;
+        int[] drawnCardParameters = {0, 0};
 
         boolean gameOver = false;
-
+    
         String[] deck = {
             
             "AH", "2H", "3H", "4H", "5H", "6H", "7H", "8H", "9H", "1H", "JH", "QH", "KH",
@@ -74,9 +74,13 @@ public class TerminalBlackjack {
 
         int plHandValue;   
         int dlHandValue;
+        int[] dlStHandValue;
 
         int plHandCount;
         int dlHandCount;
+
+        boolean plAce;
+        boolean dlAce;
 
 
         // Creating array of cards with the chosen number of decks and pasting it to originalDeck, to be used when cards run out of the shoe.
@@ -128,9 +132,13 @@ public class TerminalBlackjack {
 
             plHand = new String[cardsInShoe];
             dlHand = new String[cardsInShoe];
+            dlStHandValue = new int[2];
 
             plHandCount = 0;
             dlHandCount = 0;
+
+            plAce = false;
+            dlAce = false;
 
             while(true)
             {
@@ -138,8 +146,11 @@ public class TerminalBlackjack {
                 try
                 {
 
-                    System.out.println("You currently have " + ownedChips + " chips." + "Please enter your bet: ");
+                    System.out.println();
+                    System.out.println("You currently have " + ownedChips + " chips." + " Please enter your bet: ");
                     bet = input.nextInt();
+                    ownedChips -= bet;
+                    System.out.println();
 
                 }
                 catch(Exception InputMismatchException)
@@ -179,7 +190,9 @@ public class TerminalBlackjack {
 
                 dlHandCount++;
 
-                dlHandValue += drawnCardParameters[1];
+                dlStHandValue[i] = drawnCardParameters[1];
+
+                dlHandValue += dlStHandValue[i];
 
                 usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters[0]);
 
@@ -188,7 +201,17 @@ public class TerminalBlackjack {
                 if(plHandValue == 21)
                 {
 
+                    gameOver = true;
+                    ownedChips += bet*3;
+                    System.out.println("Blackjack! You win " + (bet*3) + " chips. ");
 
+                }
+
+                if(dlHandValue == 21)
+                {
+
+                    gameOver = true;
+                    System.out.println("The dealer has Blackjack. You lost this one.");
 
                 }
 
@@ -197,17 +220,14 @@ public class TerminalBlackjack {
             while(!gameOver)
             {
 
-                drawnCardParameters = randomCard(usedDeck, cardsInShoe);
-
-                System.out.println(drawnCardParameters[0] + " " + drawnCardParameters[1]);
-
                 while(true)
                 {
                     
                     try
                     {
 
-                        System.out.println("You have " + " and the dealer has " + '\n' + "Do you (s)tand, (d)raw a card, (d)ouble (d)own or (sp)lit?");
+                        System.out.println("You have " + plHandValue + " and the dealer has " + dlStHandValue[0] + '\n' + "Do you (s)tand, (d)raw a card, (d)ouble (d)own or (sp)lit?");
+                        // dlStHandValue[0] is dealer's face up card
                         playerChoice = input.next();
     
                     }
@@ -220,8 +240,6 @@ public class TerminalBlackjack {
                     }
 
                     playerChoice = playerChoice.toLowerCase();
-        
-                    System.out.println(playerChoice);
     
                     if(!playerChoice.equals("s") && !playerChoice.equals("d") && !playerChoice.equals("dd") && !playerChoice.equals("sp") && !playerChoice.equals("q"))
                     {
@@ -239,13 +257,49 @@ public class TerminalBlackjack {
     
                 }
 
+                switch(playerChoice)
+                {
+
+                    case "s":
+                        
+                        while(dlHandValue != 17 || !(dlHandValue >= 21))
+                        {
+
+                            drawnCardParameters = randomCard(usedDeck, cardsInShoe);
+
+                            dlHand[dlHandCount-1] = usedDeck[drawnCardParameters[0]];
+
+                            dlHandCount++;
+            
+                            dlHandValue += drawnCardParameters[1];
+            
+                            usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters[0]);
+            
+                            cardsInShoe--;
+
+                        }
+
+                    break;
+                    case "dd":
+
+                    break;
+                    case "sp":
+
+                    break;
+                    case
+
+
+                }
+
             }
             
 
-            if(shufflePercent == cardsInShoe/originalSize*100)
+            if(shufflePercent == cardsInShoe/originalSize*100 || deckCount == 1)
             {
 
+                usedDeck = shuffle(originalDeck, cardsInShoe);
 
+                cardsInShoe = originalSize;
 
             }
 
