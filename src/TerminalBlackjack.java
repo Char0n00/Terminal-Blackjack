@@ -285,9 +285,6 @@ public class TerminalBlackjack {
                     break;
                     case "sp":
 
-                    break;
-                    case
-
 
                 }
 
