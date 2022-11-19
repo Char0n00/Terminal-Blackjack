@@ -61,6 +61,8 @@ public class TerminalBlackjack {
 
             }
 
+            pause(1000);
+
             break;
 
         }
@@ -162,6 +164,8 @@ public class TerminalBlackjack {
 
                 }
 
+                pause(1000);
+
                 break;
 
             }
@@ -203,7 +207,7 @@ public class TerminalBlackjack {
 
                     gameOver = true;
                     ownedChips += bet*3;
-                    System.out.println("Blackjack! You win " + (bet*3) + " chips. ");
+                    System.out.println("Blackjack!");
 
                 }
 
@@ -211,7 +215,7 @@ public class TerminalBlackjack {
                 {
 
                     gameOver = true;
-                    System.out.println("The dealer has Blackjack. You lost this one.");
+                    System.out.println("The dealer has Blackjack.");
 
                 }
 
@@ -226,8 +230,8 @@ public class TerminalBlackjack {
                     try
                     {
 
-                        System.out.println("You have " + plHandValue + " and the dealer has " + dlStHandValue[0] + '\n' + "Do you (s)tand, (d)raw a card, (d)ouble (d)own or (sp)lit?");
-                        // dlStHandValue[0] is dealer's face up card
+                        System.out.println("You have: \n" + plHand[0] + " " + plHand[1] + " (" + plHandValue + ")\n" + "The dealer has:\n" + dlHand[0] + " (" + dlStHandValue[0] + ")" + "\nDo you (s)tand, (d)raw a card, (d)ouble (d)own or (sp)lit?");
+
                         playerChoice = input.next();
     
                     }
@@ -261,49 +265,99 @@ public class TerminalBlackjack {
                 {
 
                     case "s":
-                        
-                        while(dlHandValue != 17 || !(dlHandValue >= 21))
+
+                        System.out.println("Dealer flips over their face down card. They have:\n " + dlHand[0] + " " + dlHand[1] + " (" + dlHandValue + ")\n");
+
+                        pause(2000);
+
+                        while(dlHandValue < 17)
                         {
 
                             drawnCardParameters = randomCard(usedDeck, cardsInShoe);
+
+                            dlHandValue += drawnCardParameters[1];
 
                             dlHand[dlHandCount-1] = usedDeck[drawnCardParameters[0]];
 
                             dlHandCount++;
             
-                            dlHandValue += drawnCardParameters[1];
-            
+                            System.out.println("The dealer hit and got " + usedDeck[drawnCardParameters[0]] + " (" + drawnCardParameters[1] + ")");
+
+                            System.out.println("Their total now is " + dlHandValue + ".\n");
+
                             usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters[0]);
             
                             cardsInShoe--;
 
+                            pause(2000);
+
                         }
 
+                        System.out.println("Dealer's total is " + dlHandValue + ".");
+                        System.out.println("Your total is " + plHandValue + ".\n");
+
+                        gameOver = true;
+                    
                     break;
+
+                    case "d":
+
+                    break;
+
                     case "dd":
 
                     break;
+
                     case "sp":
 
-
+                    break;
                 }
 
             }
+
+            if(dlHandValue < plHandValue || dlHandValue > 21)
+            {
+
+                System.out.println("You win! You get " + bet*2 + " chips.\n");
+                ownedChips += bet*2;
+
+            }  
             
+            else if(dlHandValue == plHandValue)
+            {
+
+                System.out.println("It's a push. You get your bet back.\n");
+                ownedChips += bet;
+
+            }
+
+            else if(dlHandValue > plHandValue)
+            {
+
+                System.out.println("The dealer wins this one.\n");
+
+            }
 
             if(shufflePercent == cardsInShoe/originalSize*100 || deckCount == 1)
             {
 
+                cardsInShoe = originalSize;
+
                 usedDeck = shuffle(originalDeck, cardsInShoe);
 
-                cardsInShoe = originalSize;
+                System.out.println("The deck has been shuffled.\n");
 
             }
 
         }
-        while(!playerChoice.equals("q"));
+        while(!playerChoice.equals("q") && ownedChips != 0);
 
-        
+        if(ownedChips == 0)
+        {
+
+            System.out.println("You're all out of chips. Better luck next time.");
+
+        }
 
         input.close();
     
@@ -311,7 +365,7 @@ public class TerminalBlackjack {
     
 
     // Function that chooses a random card from the shoe, returns its face value and initials
-    
+
     public static int[] randomCard(String[] usedDeck, int cardsInShoe)
     {
 
@@ -393,4 +447,18 @@ public class TerminalBlackjack {
 
     }
 
+    // Pauses the game for the amount of time passed to the function
+
+    public static void pause(int time)
+    {
+
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
+
