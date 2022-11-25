@@ -81,10 +81,10 @@ public class TerminalBlackjack {
         int plHandCount;
         int dlHandCount;
 
-        boolean plAce;
-        boolean dlAce;
+        int plAces;
+        int dlAces;
 
-
+        
         // Creating array of cards with the chosen number of decks and pasting it to originalDeck, to be used when cards run out of the shoe.
 
         int index = 1;
@@ -139,8 +139,7 @@ public class TerminalBlackjack {
             plHandCount = 0;
             dlHandCount = 0;
 
-            plAce = false;
-            dlAce = false;
+            boolean plBlackjack = false;
 
             while(true)
             {
@@ -208,6 +207,7 @@ public class TerminalBlackjack {
                     gameOver = true;
                     ownedChips += bet*3;
                     System.out.println("Blackjack!");
+                    plBlackjack = true;
 
                 }
 
@@ -255,11 +255,17 @@ public class TerminalBlackjack {
     
                     }
 
+                    pause(1000);
+
                     System.out.println();
     
                     break;
     
                 }
+
+                dlAces = softHand(dlHand, dlHandCount);
+
+                plAces = softHand(plHand, plHandCount);
 
                 switch(playerChoice)
                 {
@@ -274,6 +280,21 @@ public class TerminalBlackjack {
                         {
 
                             drawnCardParameters = randomCard(usedDeck, cardsInShoe);
+
+                            if(dlHandValue + drawnCardParameters[1] > 21 && drawnCardParameters[0] == 11)
+                            {
+
+                                drawnCardParameters[1] = 1;
+
+                            }
+
+                            if(dlHandValue + drawnCardParameters[1] > 21 && dlAces > 0)
+                            {
+
+                                dlAces--;
+                                dlHandValue -= 10;
+
+                            }
 
                             dlHandValue += drawnCardParameters[1];
 
@@ -302,6 +323,152 @@ public class TerminalBlackjack {
 
                     case "d":
 
+                        do{
+
+                            drawnCardParameters = randomCard(usedDeck, cardsInShoe);
+
+                            if(plHandValue + drawnCardParameters[1] > 21 && drawnCardParameters[1] == 11)
+                            {
+
+                                drawnCardParameters[1] = 1;
+
+                            }
+
+                            if(plHandValue + drawnCardParameters[1] > 21 && plAces > 0)
+                            {
+
+                                plAces--;
+                                plHandValue -= 10;
+
+                            }
+    
+                            plHandValue += drawnCardParameters[1];
+                            
+                            plHandCount++;
+
+                            plHand[plHandCount-1] = usedDeck[drawnCardParameters[0]];
+    
+                            System.out.println("You hit and got " + usedDeck[drawnCardParameters[0]] + " (" + drawnCardParameters[1] + ")");
+    
+                            System.out.println("Your total now is " + plHandValue + ".\n");
+
+                            pause(1000);
+    
+                            usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters[0]);
+    
+                            cardsInShoe--;
+
+                            while(true && plHandValue < 21)
+                            {
+                                
+                                try
+                                {
+            
+                                    System.out.println("You have " + plHandValue + ":");
+                                    
+                                    for(int i = 0; i < plHandCount; i++)
+                                    {
+
+                                        System.out.println(plHand[i]);
+
+                                    }
+
+                                    System.out.println("The dealer has:\n" + dlHand[0] + " (" + dlStHandValue[0] + ")" + "\nDo you (s)tand or (d)raw a card?");
+            
+                                    playerChoice = input.next();
+                
+                                }
+                                catch(Exception InputMismatchException)
+                                {
+            
+                                    System.out.println("Please input a choice in the form of a letter.");
+                                    input = new Scanner(System.in);
+            
+                                }
+            
+                                playerChoice = playerChoice.toLowerCase();
+                
+                                if(!playerChoice.equals("s") && !playerChoice.equals("d") && !playerChoice.equals("q"))
+                                {
+                
+                                    System.out.println();
+                                    System.out.println("Please input one of the given choices.");
+                                    playerChoice = new String();
+                                    continue;
+                
+                                }
+            
+                                pause(1000);
+            
+                                System.out.println();
+                
+                                break;
+                
+                            }
+
+                        }
+                        while(!playerChoice.equals("s") && plHandValue < 21);
+
+                        if(plHandValue > 21)
+                        {
+
+                            System.out.println("You've gone and busted my good man.");
+                            gameOver = true;
+
+                        }
+
+                        else{
+
+                            System.out.println("Dealer flips over their face down card. They have:\n " + dlHand[0] + " " + dlHand[1] + " (" + dlHandValue + ")\n");
+
+                            pause(2000);
+
+                            while(dlHandValue < 17)
+                            {
+
+                                drawnCardParameters = randomCard(usedDeck, cardsInShoe);
+
+                                if(dlHandValue + drawnCardParameters[1] > 21 && drawnCardParameters[0] == 11)
+                                {
+
+                                    drawnCardParameters[1] = 1;
+
+                                }
+
+                                if(dlHandValue + drawnCardParameters[1] > 21 && dlAces > 0)
+                                {
+
+                                    dlAces--;
+                                    dlHandValue -= 10;
+
+                                }
+
+                                dlHandValue += drawnCardParameters[1];
+
+                                dlHand[dlHandCount-1] = usedDeck[drawnCardParameters[0]];
+
+                                dlHandCount++;
+            
+                                System.out.println("The dealer hit and got " + usedDeck[drawnCardParameters[0]] + " (" + drawnCardParameters[1] + ")");
+
+                                System.out.println("Their total now is " + dlHandValue + ".\n");
+
+                                usedDeck = cardRemoval(usedDeck, cardsInShoe, drawnCardParameters[0]);
+            
+                                cardsInShoe--;
+
+                                pause(2000);
+
+                            }
+
+                            System.out.println("Dealer's total is " + dlHandValue + ".");
+                            System.out.println("Your total is " + plHandValue + ".\n");
+
+                            gameOver = true;
+
+                        }
+                        
+
                     break;
 
                     case "dd":
@@ -315,7 +482,14 @@ public class TerminalBlackjack {
 
             }
 
-            if(dlHandValue < plHandValue || dlHandValue > 21)
+            if(plBlackjack == true)
+            {
+
+                System.out.println("You win! You get " + bet*3 + "chips.");
+
+            }
+
+            if((dlHandValue < plHandValue || dlHandValue > 21) && plHandValue <= 21)
             {
 
                 System.out.println("You win! You get " + bet*2 + " chips.\n");
@@ -331,7 +505,7 @@ public class TerminalBlackjack {
 
             }
 
-            else if(dlHandValue > plHandValue)
+            else
             {
 
                 System.out.println("The dealer wins this one.\n");
@@ -460,5 +634,25 @@ public class TerminalBlackjack {
 
     }
 
+    public static int softHand(String[] passedHand, int cardCount)
+    {
+
+        int acesInHand = 0;
+
+        for(int i = 0; i < cardCount; i++)
+        {
+
+            if(passedHand[i].toCharArray()[0] == 'A')
+            {
+
+                acesInHand++;
+
+            }
+
+        }
+
+        return acesInHand;
+
+    }
 }
 
