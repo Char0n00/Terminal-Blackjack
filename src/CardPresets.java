@@ -1,8 +1,5 @@
 public class CardPresets {
 
-
-	public static void main(String[] args) {
-	
 	   String[] jackOfHearts = {"╭─────────╮","│J♥       │","│     │   │","│     │   │","│     │   │","│     │   │","│  \\__/   │","│       ♥J│","╰─────────╯"};                 
 	   String[] jackOfClubs = {"╭─────────╮","│J♣       │","│     │   │","│     │   │","│     │   │","│     │   │","│  \\__/   │","│       ♣J│","╰─────────╯"};
 	   String[] jackOfSpades = {"╭─────────╮","│J♠       │","│     │   │","│     │   │","│     │   │","│     │   │","│  \\__/   │","│       ♠J│","╰─────────╯"};
@@ -25,13 +22,6 @@ public class CardPresets {
 	   
 	   
 	   String[] backOfCards = {"╭─────────╮","│XXXXXXXXX│","│/////////│","│XXXXXXXXX│","│\\\\\\\\\\\\\\\\\\│","│XXXXXXXXX│","│/////////│","│XXXXXXXXX│","╰─────────╯"};
-	   
-	   
-	   for (int  i = 0; i <= 8; i++)
-	   			System.out.println(backOfCards[i]);
-	    
-
-	}
 	
 }
 //1┌─────────╮   
