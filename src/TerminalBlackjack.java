@@ -17,13 +17,10 @@ class gameInformation{
 
     }
 
-    public int shoeSize;
-    public int deckCount;
+    int deckCount = 4;
+    int shoeSize;
 
     List<String> usedDeck = new ArrayList<String>();
-
-
-
 
 }
 
@@ -35,15 +32,15 @@ class playerInformation extends gameInformation{
 
 }
 
-
-
 class playerInput extends gameInformation{
 
     String queryLine;
     String errorLine;
 
-    static void inputOfText(String queryLine, String errorLine)
+    int inputOfNumbers(String queryLine, String errorLine)
     {
+
+        int inputNumber;
 
         Scanner input = new Scanner(System.in);
 
@@ -54,7 +51,7 @@ class playerInput extends gameInformation{
             {
 
                 System.out.println(queryLine); 
-                gameInformation.deckCount = input.nextInt();
+                inputNumber = input.nextInt();
 
             }
             catch(Exception InputMismatchException)
@@ -73,6 +70,44 @@ class playerInput extends gameInformation{
 
         }
 
+        input.close();
+
+        return inputNumber;
+
+    }
+
+    void inputOfText(String queryLine, String errorLine, String inputString){
+
+        Scanner input = new Scanner(System.in);
+
+        while(true)
+        {
+
+            try
+            {
+
+                System.out.println(queryLine); 
+                inputString = input.next();
+
+            }
+            catch(Exception InputMismatchException)
+            {
+
+                System.out.println();
+                System.out.println(errorLine);
+                input = new Scanner(System.in);
+                continue;
+
+            }
+
+            pause(1000);
+
+            break;
+
+        }
+
+        input.close();
+
     }
 
 }
@@ -88,7 +123,12 @@ public class TerminalBlackjack {
 
         gameInformation gameInfo = new gameInformation();
 
-        gameInfo.
+        playerInput plInput = new playerInput();
+
+        cardGeneration cardGen = new cardGeneration();
+
+        gameInfo.deckCount = plInput.inputOfNumbers("Please select the number of decks used this game. Usually, 4 are used: ", "Invalid format. \n");
+        gameInfo.shoeSize = gameInfo.deckCount * 52;
 
         
 
