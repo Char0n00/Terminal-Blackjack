@@ -4,6 +4,50 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 
+class gameActions extends gameInformation implements playerInformation, dealerInformation{
+
+    Random ran = new Random();
+
+    int randomSelection = 0;
+
+    // A method for shuffling the shoe of the current game.
+    // Modifies the list of cards within this (gameInformation) class. 
+    //void shuffleShoe()
+
+
+    public int randomIndex(){
+
+        return ran.nextInt(shoeSize); 
+
+    }
+
+    void drawCard(String drawingFor){
+
+        switch (drawingFor){
+
+            case "player":
+                
+                randomSelection = randomIndex();
+
+                playerHand.add(usedDeck.get(randomSelection));
+
+                usedDeck.remove(randomSelection);
+
+                shoeSize--;
+
+            break;
+            case "dealer":
+
+            break;
+
+        }
+
+    }
+
+
+}
+
+
 class gameInformation{
 
 
@@ -59,6 +103,7 @@ class gameInformation{
     }
 
 
+
     // A method for adding a select number of cards to the game shoe. 
     // Modifies the list of cards within this (gameInformation) class.
     void addCardsToDeck()
@@ -79,35 +124,31 @@ class gameInformation{
     }
 
 
-    // A method for shuffling the shoe of the current game.
-    // Modifies the list of cards within this (gameInformation) class. 
-    //void shuffleShoe()
+
 
 }
 
-class playerInformation extends gameInformation{
+interface playerInformation{   
 
     int chips = 1000;
 
-    String name;
+    String name = " ";
 
     List<String> playerHand = new ArrayList<String>();
 
-    int handValue = 0;
+    int playerHandValue = 0;
 
-    int Aces = 0;
+    int playerAces = 0;
 
 }
 
-class dealerInformation extends gameInformation{
+interface dealerInformation {
 
-    List<String> playerHand = new ArrayList<String>();
+    List<String> dealerHand = new ArrayList<String>();
 
-    int handValue = 0;
+    int dealerHandValue = 0;
 
-    int Aces = 0;
-
-
+    int dealerAces = 0;
 
 }
 
@@ -212,16 +253,19 @@ public class TerminalBlackjack {
 
         cardGeneration cardGen = new cardGeneration();
 
+        gameActions gameAction = new gameActions();
+
         gameInfo.setDeckCount(plInput.inputOfNumbers("Please select the number of decks used this game. Usually, 4 are used: ", "Invalid format. \n"));
         gameInfo.setShoeSize(gameInfo.deckCount*52);
 
         do{
 
-
+            System.out.println("You currently have " + gameAction.chips + " chips.");
+            gameInfo.currentPlayerChoice 
 
 
         }
-        while(gameInfo.currentPlayerChoice != 'q')
+        while(gameInfo.currentPlayerChoice != "q"); 
 
 
 
