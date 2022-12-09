@@ -137,7 +137,7 @@ class gameInformation{
 
     // void Pause(time) - pauses the program for a given duration.
     // int time: time to pause for in milliseconds
-    public static void pause(int time)
+    public void pause(int time)
     {
 
         try {
@@ -213,7 +213,7 @@ class playerInput extends gameInformation{
     int inputOfNumbers(String queryLine, String errorLine)
     {
 
-        int inputNumber;
+        int inputNumber = 0;
 
         Scanner input = new Scanner(System.in);
 
@@ -223,7 +223,7 @@ class playerInput extends gameInformation{
             try
             {
 
-                System.out.println(queryLine); 
+                System.out.println(queryLine);
                 inputNumber = input.nextInt();
 
             }
@@ -236,14 +236,20 @@ class playerInput extends gameInformation{
                 continue;
 
             }
+            if(inputNumber < 0)
+            {
+
+                System.out.println("You can't enter a negative number.\n");
+                pause(400);
+                continue;
+
+            }
 
             pause(1000);
 
             break;
 
         }
-
-        input.close();
 
         return inputNumber;
 
@@ -310,25 +316,51 @@ public class TerminalBlackjack {
 
         gameActions gameAction = new gameActions();
 
-        gameInfo.setDeckCount(plInput.inputOfNumbers("Please select the number of decks used this game. Usually, 4 are used: ", "Invalid format. \n"));
-        gameInfo.setShoeSize(gameInfo.deckCount*52);
-        // TODO add protection here from out of memory errors.
+        while(true){
 
+            gameInfo.deckCount = plInput.inputOfNumbers("Please select the number of decks used this game. Usually, 4 are used: ", "Invalid format. \n");
+
+            if(gameInfo.deckCount >= 100)
+            {
+
+                System.out.println("Please input a deck count between 0 and 100.\n");
+                gameInfo.deckCount = 4;
+                gameAction.pause(400);
+                continue;
+
+            }
+
+            break;
+
+        }
+        gameInfo.setShoeSize(gameInfo.deckCount*52);
+
+        System.out.println();
 
         do{
 
-            System.out.println("You currently have " + gameAction.chips + " chips.");
-            gameInfo.setCurrentPlayerBet(plInput.inputOfNumbers("Please enter your bet.", "Please enter a whole number."));
-            // TODO add check if player bet more than they have
+            while(true){
+
+                System.out.println("You currently have " + gameActions.chips + " chips.");
+                gameInfo.setCurrentPlayerBet(plInput.inputOfNumbers("Please enter your bet:", "Please enter a whole number.\n"));
+
+                if(gameInfo.currentPlayerBet  > gameAction.chips){
+
+                    System.out.println("You can only bet less than or the chips that you own.");
+                    continue; 
+
+                }
+
+                break;
+
+            }
+
+            
+
 
 
         }
-        while(gameInfo.currentPlayerChoice != "q"); 
-
-
-
-        
-
+        while(gameInfo.currentPlayerChoice != "q");
 
     } 
 
