@@ -13,15 +13,37 @@ class gameActions extends gameInformation implements playerInformation, dealerIn
     // TODO create method that determines the threshold when the deck gets reshuffled
 
 
-    // TODO create shuffle function
     // A method for shuffling the shoe of the current game.
     // Modifies the list of cards within this (gameInformation) class. 
-    //void shuffleShoe()
+    void shuffleShoe()
+    {
+
+        List<String> temporaryList = new ArrayList<String>();
+
+        List<String> temporaryUsedDeck = new ArrayList<String>();
+
+        temporaryUsedDeck = usedDeck;
+
+        int randIndex = 0;
+
+        for(int i = shoeSize; i >= 0 ; i--)
+        {
+
+            randIndex = randomIndex(i);
+
+            temporaryList.add(usedDeck.get(randIndex));
+
+            temporaryUsedDeck.remove(randIndex);
+
+        }
+
+
+    }
 
     // Random index() - returns random index (int) of a card within the borders of the game's shoe size.
-    int randomIndex(){
+    int randomIndex(int limit){
 
-        return ran.nextInt(shoeSize); 
+        return ran.nextInt(limit); 
 
     }
 
@@ -67,7 +89,7 @@ class gameActions extends gameInformation implements playerInformation, dealerIn
 
             case "player":
                 
-                randomSelection = randomIndex();
+                randomSelection = randomIndex(shoeSize);
 
                 playerHand.add(usedDeck.get(randomSelection));
 
@@ -354,6 +376,8 @@ public class TerminalBlackjack {
                 break;
 
             }
+
+            // TODO start the gameplay
 
             
 
