@@ -11,7 +11,7 @@ class cardGeneration {
     // Main program loop
 
     char cardSymb = ' ';
-    String[] generatedCard = {"   ", "   ", "   ", "   ", "   "};
+    String[] generatedCard = {"   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "};
 
     int[] linesGeneration = { 0, 0, 0, 0, 0 };
     
@@ -75,7 +75,7 @@ class cardGeneration {
         "╰─────────╯"
     };
 
-    public void generation(String cardCode)
+    public String[] generation(String cardCode)
     {
 
         // Set the symbol of the card
@@ -321,6 +321,8 @@ class cardGeneration {
             break;
 
         }
+
+        return generatedCard;
 
     }
 

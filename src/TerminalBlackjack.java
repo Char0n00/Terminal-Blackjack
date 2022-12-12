@@ -1,41 +1,73 @@
 import java.util.Random;
 import java.util.Scanner;
+
+import javax.lang.model.util.ElementScanner14;
+
 import java.util.List;
 import java.util.ArrayList;
 
 
-class gameActions extends gameInformation implements playerInformation, dealerInformation{
+class gameActions extends gameInformation{
 
     Random ran = new Random();
 
     int randomSelection = 0;
+
+    public int getChips()
+    {
+
+        return chips;
+
+    }
+
+    public void setChips(int chips){
+
+        this.chips = chips;
+
+    }
 
     // TODO create method that determines the threshold when the deck gets reshuffled
 
 
     // A method for shuffling the shoe of the current game.
     // Modifies the list of cards within this (gameInformation) class. 
-    void shuffleShoe()
+    public void shuffleShoe()
     {
 
         List<String> temporaryList = new ArrayList<String>();
 
         List<String> temporaryUsedDeck = new ArrayList<String>();
 
-        temporaryUsedDeck = usedDeck;
+        for(int i = 0; i < shoeSize; i++)
+        {
+
+            temporaryUsedDeck.add(super.usedDeck.get(i));
+
+        }
 
         int randIndex = 0;
 
-        for(int i = shoeSize; i >= 0 ; i--)
+        for(int i = shoeSize - 1; i > 0 ; i--)
         {
 
             randIndex = randomIndex(i);
 
-            temporaryList.add(usedDeck.get(randIndex));
+            temporaryList.add(temporaryUsedDeck.get(randIndex));
 
             temporaryUsedDeck.remove(randIndex);
 
         }
+
+        temporaryList.add(usedDeck.get(0));
+        temporaryUsedDeck.remove(randIndex);
+
+        for(int i = 0; i < shoeSize; i++)
+        {
+
+            usedDeck.set(i, temporaryList.get(i));
+
+        }
+
 
 
     }
@@ -83,24 +115,94 @@ class gameActions extends gameInformation implements playerInformation, dealerIn
 
     // void drawnCard(String drawingFor) - draws a random card, directly modifies variables playerInformation and dealerInformation and outputs it.
     // String drawingFor: either "player" or "dealer", you choose who is hitting.  
-    void drawCard(String drawingFor){
+    public void drawCard(String drawingFor){
 
         switch (drawingFor){
 
             case "player":
                 
                 randomSelection = randomIndex(shoeSize);
-
                 playerHand.add(usedDeck.get(randomSelection));
-
                 playerHandValues.add(drawnCardValue(usedDeck.get(randomSelection)));
+                playerHandValue += drawnCardValue(usedDeck.get(randomSelection));
+
+                if(drawnCardValue(usedDeck.get(randomSelection)) == 11)
+                {
+
+                    playerAces++;
+
+                }
+
+                addCardsToDisplay("player", usedDeck.get(randomSelection), "  ");
 
                 usedDeck.remove(randomSelection);
-
                 shoeSize--;
+
+                if(playerAces > 0 && playerHandValue > 21)
+                {
+
+                    playerAces--;
+                    playerHandValue -= 10;
+
+                }
+
+                if(playerHandValue == 21 && playerHand.size() == 2)
+                {
+
+                    playerBlackjack = true;
+
+                }
 
             break;
             case "dealer":
+
+                randomSelection = randomIndex(shoeSize);
+                dealerHand.add(usedDeck.get(randomSelection));
+                dealerHandValues.add(drawnCardValue(usedDeck.get(randomSelection)));
+                dealerHandValue += drawnCardValue(usedDeck.get(randomSelection));
+
+                if(drawnCardValue(usedDeck.get(randomSelection)) == 11)
+                {
+
+                    dealerAces++;
+
+                }
+
+                if(dealerHand.size() == 2){
+
+                    addCardsToDisplay("dealer", "  ", "BC");
+
+                }
+
+                else if(dealerHand.size() > 2){
+
+                    addCardsToDisplay("dealer", usedDeck.get(randomSelection), "ND");
+
+                }
+                else{
+
+                    addCardsToDisplay("dealer", usedDeck.get(randomSelection), "ND");
+
+                }
+
+
+                usedDeck.remove(randomSelection);
+                shoeSize--;
+
+                if(dealerAces > 0 && dealerHandValue > 21)
+                {
+
+                    dealerAces--;
+                    dealerHandValue -= 10;
+
+                }
+
+                if(dealerHandValue == 21 && dealerHand.size() == 2)
+                {
+
+                    dealerBlackjack = true;
+
+                }
 
             break;
 
@@ -108,6 +210,172 @@ class gameActions extends gameInformation implements playerInformation, dealerIn
 
     }
 
+    ArrayList<ArrayList<String>> playerCardDisplay = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> dealerCardDisplay = new ArrayList<ArrayList<String>>();
+
+    ArrayList<String> plLine1 = new ArrayList<String>();
+    ArrayList<String> plLine2 = new ArrayList<String>();
+    ArrayList<String> plLine3 = new ArrayList<String>();
+    ArrayList<String> plLine4 = new ArrayList<String>();
+    ArrayList<String> plLine5 = new ArrayList<String>();
+    ArrayList<String> plLine6 = new ArrayList<String>();
+    ArrayList<String> plLine7 = new ArrayList<String>();
+    ArrayList<String> plLine8 = new ArrayList<String>();
+    ArrayList<String> plLine9 = new ArrayList<String>();
+
+    ArrayList<String> dlLine1 = new ArrayList<String>();
+    ArrayList<String> dlLine2 = new ArrayList<String>();
+    ArrayList<String> dlLine3 = new ArrayList<String>();
+    ArrayList<String> dlLine4 = new ArrayList<String>();
+    ArrayList<String> dlLine5 = new ArrayList<String>();
+    ArrayList<String> dlLine6 = new ArrayList<String>();
+    ArrayList<String> dlLine7 = new ArrayList<String>();
+    ArrayList<String> dlLine8 = new ArrayList<String>();
+    ArrayList<String> dlLine9 = new ArrayList<String>();
+
+    cardGeneration cardGen = new cardGeneration();
+
+    void addCardsToDisplay(String addingFor, String cardCode, String dealerFaceDown){
+
+
+        playerCardDisplay = new ArrayList<ArrayList<String>>();
+        dealerCardDisplay = new ArrayList<ArrayList<String>>();
+
+        String[] temporaryStringArr = new String[9];
+
+        switch(addingFor){
+
+            case "player":
+
+                temporaryStringArr = cardGen.generation(cardCode);
+
+                plLine1.add(temporaryStringArr[0] + " ");
+                plLine2.add(temporaryStringArr[1] + " ");
+                plLine3.add(temporaryStringArr[2] + " ");
+                plLine4.add(temporaryStringArr[3] + " ");
+                plLine5.add(temporaryStringArr[4] + " ");
+                plLine6.add(temporaryStringArr[5] + " ");
+                plLine7.add(temporaryStringArr[6] + " ");
+                plLine8.add(temporaryStringArr[7] + " ");
+                plLine9.add(temporaryStringArr[8] + " ");
+
+                playerCardDisplay.add(plLine1);
+                playerCardDisplay.add(plLine2);
+                playerCardDisplay.add(plLine3);
+                playerCardDisplay.add(plLine4);
+                playerCardDisplay.add(plLine5);
+                playerCardDisplay.add(plLine6);
+                playerCardDisplay.add(plLine7);
+                playerCardDisplay.add(plLine8);
+                playerCardDisplay.add(plLine9);
+
+                System.out.println("Player card added");
+
+            break;
+            
+            case "dealer":
+
+                temporaryStringArr = cardGen.generation(cardCode);
+
+                switch(dealerFaceDown){
+
+                    case "BC":  // First time dealing the second card for the dealer it is written as a face down card
+
+                        temporaryStringArr = cardGen.generation(dealerFaceDown);
+
+                        dlLine1.add(temporaryStringArr[0] + " ");
+                        dlLine2.add(temporaryStringArr[1] + " ");
+                        dlLine3.add(temporaryStringArr[2] + " ");
+                        dlLine4.add(temporaryStringArr[3] + " ");
+                        dlLine5.add(temporaryStringArr[4] + " ");
+                        dlLine6.add(temporaryStringArr[5] + " ");
+                        dlLine7.add(temporaryStringArr[6] + " ");
+                        dlLine8.add(temporaryStringArr[7] + " ");
+                        dlLine9.add(temporaryStringArr[8] + " ");
+
+                    break;
+                    case "FL":  // After the player stands or goes bust, flip over the dealers card
+
+                        temporaryStringArr = cardGen.generation(dealerHand.get(1));
+
+                        dlLine1.set(1, temporaryStringArr[0] + " ");
+                        dlLine2.set(1, temporaryStringArr[1] + " ");
+                        dlLine3.set(1, temporaryStringArr[2] + " ");
+                        dlLine4.set(1, temporaryStringArr[3] + " ");
+                        dlLine5.set(1, temporaryStringArr[4] + " ");
+                        dlLine6.set(1, temporaryStringArr[5] + " ");
+                        dlLine7.set(1, temporaryStringArr[6] + " ");
+                        dlLine8.set(1, temporaryStringArr[7] + " ");
+                        dlLine9.set(1, temporaryStringArr[8] + " ");
+
+                    break;
+                    case "ND":  // Normal dealing for the dealer after the face down has been flipped over
+
+                        temporaryStringArr = cardGen.generation(cardCode);
+
+                        dlLine1.add(temporaryStringArr[0] + " ");
+                        dlLine2.add(temporaryStringArr[1] + " ");
+                        dlLine3.add(temporaryStringArr[2] + " ");
+                        dlLine4.add(temporaryStringArr[3] + " ");
+                        dlLine5.add(temporaryStringArr[4] + " ");
+                        dlLine6.add(temporaryStringArr[5] + " ");
+                        dlLine7.add(temporaryStringArr[6] + " ");
+                        dlLine8.add(temporaryStringArr[7] + " ");
+                        dlLine9.add(temporaryStringArr[8] + " ");
+
+                    break;
+
+                
+
+                }
+
+                dealerCardDisplay.add(dlLine1);
+                dealerCardDisplay.add(dlLine2);
+                dealerCardDisplay.add(dlLine3);
+                dealerCardDisplay.add(dlLine4);
+                dealerCardDisplay.add(dlLine5);
+                dealerCardDisplay.add(dlLine6);
+                dealerCardDisplay.add(dlLine7);
+                dealerCardDisplay.add(dlLine8);
+                dealerCardDisplay.add(dlLine9);
+
+                System.out.println("Dealer card added");
+
+            break;
+
+        }
+
+    }
+
+    void displayCards(){
+
+        for(int lines = 0; lines < 9; lines++)
+        {
+
+            for(int collumns = 0; collumns < dlLine1.size(); collumns++){
+
+                System.out.print(dealerCardDisplay.get(lines).get(collumns));
+
+            }
+
+            System.out.print("\n");
+
+        }
+
+        System.out.println();
+
+        /* for(int lines = 0; lines < 9; lines++)
+        {
+
+            for(int collumns = 0; collumns < plLine1.size(); collumns++){
+
+                System.out.println(playerCardDisplay.get(lines).get(collumns));
+
+            }
+
+        } */
+
+    }
 
 }
 
@@ -115,7 +383,7 @@ class gameActions extends gameInformation implements playerInformation, dealerIn
 class gameInformation{
 
 
-    // A standard deck of cards. Technically, can be modified for some... interesting outcomes.
+    // General game variables
     String[] deck = {
             
         "AH", "2H", "3H", "4H", "5H", "6H", "7H", "8H", "9H", "1H", "JH", "QH", "KH",
@@ -126,13 +394,42 @@ class gameInformation{
     };
 
     int deckCount = 4;
-    int shoeSize;
+    int shoeSize = deckCount*52;
 
-    List<String> usedDeck = new ArrayList<String>();
+    public List<String> usedDeck = new ArrayList<String>();
 
     String currentPlayerChoice = " ";
 
     int currentPlayerBet = 0;
+
+    boolean dealerBlackjack = false;
+    boolean playerBlackjack = false;
+
+
+    // Player variables
+    int chips = 1000;
+
+    String name = " ";
+
+    List<String> playerHand = new ArrayList<String>();
+
+    List<Integer> playerHandValues = new ArrayList<Integer>(); 
+
+    int playerHandValue = 0;
+
+    int playerAces = 0;
+
+
+    // Dealer variables
+
+    List<String> dealerHand = new ArrayList<String>();
+
+    List<Integer> dealerHandValues = new ArrayList<Integer>();
+
+    int dealerHandValue = 0;
+
+    int dealerAces = 0;
+
     
     // A collection of getters and setters for the class variables.
     public int getDeckCount() {
@@ -156,6 +453,16 @@ class gameInformation{
         this.currentPlayerBet = currentPlayerBet;
     }
 
+    
+
+
+    public List<String> getUsedDeck() {
+        return usedDeck;
+    }
+
+    public void setUsedDeck(List<String> usedDeck) {
+        this.usedDeck = usedDeck;
+    }
 
     // void Pause(time) - pauses the program for a given duration.
     // int time: time to pause for in milliseconds
@@ -171,7 +478,6 @@ class gameInformation{
     }
 
 
-
     // void addCardsToDeck - adds cards from the "Deck" preset (Just a standard deck of cards) to the shoe, directly modifies the usedDeck variable.
     void addCardsToDeck()
     {
@@ -185,49 +491,22 @@ class gameInformation{
                 usedDeck.add(deck[cardsIndex]);
     
             }
-    
+
         }
+
+        setUsedDeck(usedDeck);
 
     }
 
 
 
-
 }
 
-interface playerInformation{   
-
-    int chips = 1000;
-
-    String name = " ";
-
-    List<String> playerHand = new ArrayList<String>();
-
-    List<Integer> playerHandValues = new ArrayList<Integer>(); 
-
-    int playerHandValue = 0;
-
-    int playerAces = 0;
-
-}
-
-interface dealerInformation {
-
-    List<String> dealerHand = new ArrayList<String>();
-
-    List<Integer> dealerHandValues = new ArrayList<Integer>();
-
-    int dealerHandValue = 0;
-
-    int dealerAces = 0;
-
-}
 
 class playerInput extends gameInformation{
 
     String queryLine;
     String errorLine;
-
 
     // InputOfNumbers - returns int that the user provided. Checks for InputMismatchExeptions, but not everything else.
     // String queryLine: text you want to display that explains to the player what to enter
@@ -330,23 +609,24 @@ public class TerminalBlackjack {
         System.out.println("Created by: char0n00 and Tomukas10 \n") ;  
         System.out.println("Win payout is 1:1. Blackjack payout is 2:1. Dealer stands on 17. \n You can type \"q\" at any time to exit. \n");
 
-        gameInformation gameInfo = new gameInformation();
+        gameActions gameAction = new gameActions();
+
+        //gameInformation gameInfo = new gameInformation();
 
         playerInput plInput = new playerInput();
 
-        cardGeneration cardGen = new cardGeneration();
 
-        gameActions gameAction = new gameActions();
+
 
         while(true){
 
-            gameInfo.deckCount = plInput.inputOfNumbers("Please select the number of decks used this game. Usually, 4 are used: ", "Invalid format. \n");
+            gameAction.deckCount = plInput.inputOfNumbers("Please select the number of decks used this game. Usually, 4 are used: ", "Invalid format. \n");
 
-            if(gameInfo.deckCount >= 100)
+            if(gameAction.deckCount >= 100)
             {
 
                 System.out.println("Please input a deck count between 0 and 100.\n");
-                gameInfo.deckCount = 4;
+                gameAction.deckCount = 4;
                 gameAction.pause(400);
                 continue;
 
@@ -355,23 +635,29 @@ public class TerminalBlackjack {
             break;
 
         }
-        gameInfo.setShoeSize(gameInfo.deckCount*52);
 
-        System.out.println();
+        gameAction.setShoeSize(gameAction.deckCount*52);
+
+        gameAction.addCardsToDeck();
+
+        gameAction.shuffleShoe();
+
 
         do{
 
             while(true){
 
-                System.out.println("You currently have " + gameActions.chips + " chips.");
-                gameInfo.setCurrentPlayerBet(plInput.inputOfNumbers("Please enter your bet:", "Please enter a whole number.\n"));
+                System.out.println("\nYou currently have " + gameAction.chips + " chips.");
+                gameAction.setCurrentPlayerBet(plInput.inputOfNumbers("Please enter your bet:", "Please enter a whole number.\n"));
 
-                if(gameInfo.currentPlayerBet  > gameAction.chips){
+                if(gameAction.currentPlayerBet  > gameAction.chips){
 
                     System.out.println("You can only bet less than or the chips that you own.");
                     continue; 
 
                 }
+
+                gameAction.chips = gameAction.chips - gameAction.currentPlayerBet;
 
                 break;
 
@@ -379,12 +665,24 @@ public class TerminalBlackjack {
 
             // TODO start the gameplay
 
-            
+            gameAction.drawCard("player");
+            gameAction.drawCard("dealer");
+            gameAction.drawCard("player");
+            gameAction.drawCard("dealer");
+
+            // display the cards
+
+            gameAction.displayCards();
+            // TODO add the back of card printing to the display function
+
+            // Ask for input based on the 
+
+
 
 
 
         }
-        while(gameInfo.currentPlayerChoice != "q");
+        while(gameAction.currentPlayerChoice != "q" && gameAction.chips > 0);
 
     } 
 
