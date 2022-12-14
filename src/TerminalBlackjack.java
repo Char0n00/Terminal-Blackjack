@@ -1,30 +1,42 @@
 import java.util.Random;
 import java.util.Scanner;
-
-import javax.lang.model.util.ElementScanner14;
-
 import java.util.List;
 import java.util.ArrayList;
 
 
 class gameActions extends gameInformation{
 
+    // Declaring variables
+
     Random ran = new Random();
 
     int randomSelection = 0;
 
-    public int getChips()
-    {
+    ArrayList<ArrayList<String>> playerCardDisplay = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> dealerCardDisplay = new ArrayList<ArrayList<String>>();
 
-        return chips;
+    ArrayList<String> plLine1 = new ArrayList<String>();
+    ArrayList<String> plLine2 = new ArrayList<String>();
+    ArrayList<String> plLine3 = new ArrayList<String>();
+    ArrayList<String> plLine4 = new ArrayList<String>();
+    ArrayList<String> plLine5 = new ArrayList<String>();
+    ArrayList<String> plLine6 = new ArrayList<String>();
+    ArrayList<String> plLine7 = new ArrayList<String>();
+    ArrayList<String> plLine8 = new ArrayList<String>();
+    ArrayList<String> plLine9 = new ArrayList<String>();
 
-    }
+    ArrayList<String> dlLine1 = new ArrayList<String>();
+    ArrayList<String> dlLine2 = new ArrayList<String>();
+    ArrayList<String> dlLine3 = new ArrayList<String>();
+    ArrayList<String> dlLine4 = new ArrayList<String>();
+    ArrayList<String> dlLine5 = new ArrayList<String>();
+    ArrayList<String> dlLine6 = new ArrayList<String>();
+    ArrayList<String> dlLine7 = new ArrayList<String>();
+    ArrayList<String> dlLine8 = new ArrayList<String>();
+    ArrayList<String> dlLine9 = new ArrayList<String>();
 
-    public void setChips(int chips){
+    cardGeneration cardGen = new cardGeneration();
 
-        this.chips = chips;
-
-    }
 
     // TODO create method that determines the threshold when the deck gets reshuffled
 
@@ -72,7 +84,8 @@ class gameActions extends gameInformation{
 
     }
 
-    // Random index() - returns random index (int) of a card within the borders of the game's shoe size.
+    // Random index() - returns random index (int) of a card within the limit
+    // int limit: the limit of the random number generated
     int randomIndex(int limit){
 
         return ran.nextInt(limit); 
@@ -87,7 +100,7 @@ class gameActions extends gameInformation{
 
         int faceValue = 0;
 
-        switch(card.toCharArray()[1])
+        switch(card.toCharArray()[0])
         {
 
             case 'A': faceValue = 11;
@@ -144,6 +157,20 @@ class gameActions extends gameInformation{
                     playerAces--;
                     playerHandValue -= 10;
 
+                    for(int i = playerHand.size() - 1; i >= 0; i--)
+                    {
+
+                        if(playerHandValues.get(i) == 11)
+                        {
+
+                            playerHandValues.set(i, 1);
+
+                            break;
+
+                        }
+
+                    }
+
                 }
 
                 if(playerHandValue == 21 && playerHand.size() == 2)
@@ -195,6 +222,20 @@ class gameActions extends gameInformation{
                     dealerAces--;
                     dealerHandValue -= 10;
 
+                    for(int i = dealerHand.size() - 1; i >= 0; i--)
+                    {
+
+                        if(dealerHandValues.get(i) == 11)
+                        {
+
+                            dealerHandValues.set(i, 1);
+
+                            break;
+
+                        }
+
+                    }
+
                 }
 
                 if(dealerHandValue == 21 && dealerHand.size() == 2)
@@ -210,42 +251,23 @@ class gameActions extends gameInformation{
 
     }
 
-    ArrayList<ArrayList<String>> playerCardDisplay = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> dealerCardDisplay = new ArrayList<ArrayList<String>>();
+    // TODO write a double down function 
 
-    ArrayList<String> plLine1 = new ArrayList<String>();
-    ArrayList<String> plLine2 = new ArrayList<String>();
-    ArrayList<String> plLine3 = new ArrayList<String>();
-    ArrayList<String> plLine4 = new ArrayList<String>();
-    ArrayList<String> plLine5 = new ArrayList<String>();
-    ArrayList<String> plLine6 = new ArrayList<String>();
-    ArrayList<String> plLine7 = new ArrayList<String>();
-    ArrayList<String> plLine8 = new ArrayList<String>();
-    ArrayList<String> plLine9 = new ArrayList<String>();
 
-    ArrayList<String> dlLine1 = new ArrayList<String>();
-    ArrayList<String> dlLine2 = new ArrayList<String>();
-    ArrayList<String> dlLine3 = new ArrayList<String>();
-    ArrayList<String> dlLine4 = new ArrayList<String>();
-    ArrayList<String> dlLine5 = new ArrayList<String>();
-    ArrayList<String> dlLine6 = new ArrayList<String>();
-    ArrayList<String> dlLine7 = new ArrayList<String>();
-    ArrayList<String> dlLine8 = new ArrayList<String>();
-    ArrayList<String> dlLine9 = new ArrayList<String>();
 
-    cardGeneration cardGen = new cardGeneration();
+    // TODO write a split funcion (good luck with this one)
+
+
 
     void addCardsToDisplay(String addingFor, String cardCode, String dealerFaceDown){
-
-
-        playerCardDisplay = new ArrayList<ArrayList<String>>();
-        dealerCardDisplay = new ArrayList<ArrayList<String>>();
 
         String[] temporaryStringArr = new String[9];
 
         switch(addingFor){
 
             case "player":
+
+                playerCardDisplay = new ArrayList<ArrayList<String>>();
 
                 temporaryStringArr = cardGen.generation(cardCode);
 
@@ -269,13 +291,11 @@ class gameActions extends gameInformation{
                 playerCardDisplay.add(plLine8);
                 playerCardDisplay.add(plLine9);
 
-                System.out.println("Player card added");
-
             break;
             
             case "dealer":
 
-                temporaryStringArr = cardGen.generation(cardCode);
+                dealerCardDisplay = new ArrayList<ArrayList<String>>();
 
                 switch(dealerFaceDown){
 
@@ -339,8 +359,6 @@ class gameActions extends gameInformation{
                 dealerCardDisplay.add(dlLine8);
                 dealerCardDisplay.add(dlLine9);
 
-                System.out.println("Dealer card added");
-
             break;
 
         }
@@ -349,6 +367,20 @@ class gameActions extends gameInformation{
 
     void displayCards(){
 
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
+        if(dealerFaceUp == false)
+        {
+
+            System.out.println("Dealer total is " + (dealerHandValue-dealerHandValues.get(1)) + ":" );
+
+        }
+        else{
+
+            System.out.println("Dealer total is " + dealerHandValue + ":");
+
+        }
+        
         for(int lines = 0; lines < 9; lines++)
         {
 
@@ -362,18 +394,75 @@ class gameActions extends gameInformation{
 
         }
 
+        if(dealerFaceUp == false)
+        {
+
+            System.out.println("     " + dealerHandValues.get(0));
+
+        }
+        else{
+
+            System.out.print("     ");
+
+            for(int i = 0; i < dealerHandValues.size(); i++)
+            {
+
+                if(dealerHandValues.get(i) >= 10)
+                {
+
+                    System.out.print(dealerHandValues.get(i) + "          ");
+
+                }
+                else{
+
+                    System.out.print(dealerHandValues.get(i) + "           ");
+
+                }
+
+
+
+            }
+
+        }
+
         System.out.println();
 
-        /* for(int lines = 0; lines < 9; lines++)
+        System.out.println("Player total is " + playerHandValue + ":");
+        for(int lines = 0; lines < 9; lines++)
         {
 
             for(int collumns = 0; collumns < plLine1.size(); collumns++){
 
-                System.out.println(playerCardDisplay.get(lines).get(collumns));
+                System.out.print(playerCardDisplay.get(lines).get(collumns));
 
             }
 
-        } */
+            System.out.print("\n");
+
+        }
+
+        System.out.print("     ");
+
+        for(int i = 0; i < playerHandValues.size(); i++)
+        {
+
+            if(playerHandValues.get(i) >= 10)
+            {
+
+                System.out.print(playerHandValues.get(i) + "          ");
+
+            }
+            else{
+
+                System.out.print(playerHandValues.get(i) + "           ");
+
+            }
+
+
+
+        }
+
+        System.out.println("\n");
 
     }
 
@@ -430,6 +519,8 @@ class gameInformation{
 
     int dealerAces = 0;
 
+    boolean dealerFaceUp = false;
+
     
     // A collection of getters and setters for the class variables.
     public int getDeckCount() {
@@ -453,9 +544,6 @@ class gameInformation{
         this.currentPlayerBet = currentPlayerBet;
     }
 
-    
-
-
     public List<String> getUsedDeck() {
         return usedDeck;
     }
@@ -463,6 +551,7 @@ class gameInformation{
     public void setUsedDeck(List<String> usedDeck) {
         this.usedDeck = usedDeck;
     }
+
 
     // void Pause(time) - pauses the program for a given duration.
     // int time: time to pause for in milliseconds
@@ -541,12 +630,12 @@ class playerInput extends gameInformation{
             {
 
                 System.out.println("You can't enter a negative number.\n");
-                pause(400);
+                pause(480);
                 continue;
 
             }
 
-            pause(1000);
+            pause(500);
 
             break;
 
@@ -586,15 +675,13 @@ class playerInput extends gameInformation{
 
             }
 
-            pause(1000);
+            pause(500);
 
             break;
 
         }
 
-        input.close();
-
-        return inputString;
+        return inputString.toLowerCase();
 
     }
 
@@ -604,6 +691,10 @@ class playerInput extends gameInformation{
 public class TerminalBlackjack {
 
 	public static void main(String[] args){
+
+        // TODO save player info into a file
+        // TODO pipe statistics into a file
+        // TODO shorten the pauses, they do get annoying after a while
 
         System.out.println("\nWelcome to Blackjack, but a worse terminal version and written in Java.");
         System.out.println("Created by: char0n00 and Tomukas10 \n") ;  
@@ -615,9 +706,6 @@ public class TerminalBlackjack {
 
         playerInput plInput = new playerInput();
 
-
-
-
         while(true){
 
             gameAction.deckCount = plInput.inputOfNumbers("Please select the number of decks used this game. Usually, 4 are used: ", "Invalid format. \n");
@@ -627,7 +715,7 @@ public class TerminalBlackjack {
 
                 System.out.println("Please input a deck count between 0 and 100.\n");
                 gameAction.deckCount = 4;
-                gameAction.pause(400);
+                gameAction.pause(480);
                 continue;
 
             }
@@ -642,6 +730,8 @@ public class TerminalBlackjack {
 
         gameAction.shuffleShoe();
 
+
+        // Start of main game loop
 
         do{
 
@@ -663,26 +753,210 @@ public class TerminalBlackjack {
 
             }
 
-            // TODO start the gameplay
+            // Deal the first 4 cards
 
             gameAction.drawCard("player");
             gameAction.drawCard("dealer");
             gameAction.drawCard("player");
             gameAction.drawCard("dealer");
-
-            // display the cards
 
             gameAction.displayCards();
-            // TODO add the back of card printing to the display function
 
-            // Ask for input based on the 
+            while(!gameAction.currentPlayerChoice.equals("s") && gameAction.dealerBlackjack == false && gameAction.playerBlackjack == false && gameAction.playerHandValue <= 21){
+                
+                gameAction.currentPlayerChoice = new String();
+
+                
+
+                if(gameAction.playerHandValues.get(0) == gameAction.playerHandValues.get(1)){
+
+                    while(true){
+
+                        String temporaryChoice = " ";
+
+                        temporaryChoice = plInput.inputOfText("Do you (s)tand, (h)it, (sp)lit, or (d)ouble down?", "Please input a choice.");
+
+                        if(!temporaryChoice.equals("s") && !temporaryChoice.equals("sp") && !temporaryChoice.equals("d") && !temporaryChoice.equals("h")){
+
+                            System.out.println("Please input a valid choice");
+                            continue;
+
+                        }
+
+                        // TODO no inputs work when you can split
+
+                        break;
+
+                    }
+
+                }
+                else{
+
+                    while(true){
+
+                        String temporaryChoice = " ";
+
+                        temporaryChoice = plInput.inputOfText("Do you (s)tand, (h)it or (d)ouble down?", "Please input a choice.");
+
+                        // TODO add a check that doesn't let you double down when you don't have enough money for it
 
 
+                        if(!temporaryChoice.equals("s") && !temporaryChoice.equals("d") && !temporaryChoice.equals("h")){
+
+                            System.out.println("Please input a valid choice");
+                            gameAction.pause(400);
+                            continue;
+
+                        }
+
+                        gameAction.currentPlayerChoice = temporaryChoice;
+
+                        break;
+
+                    }
+
+                }
+
+                switch(gameAction.currentPlayerChoice){
+
+                    case "h":
+
+                        gameAction.drawCard("player");
+                        gameAction.displayCards();
+
+                        System.out.println("The player hit and got " + gameAction.playerHandValues.get(gameAction.playerHandValues.size()-1) + ".");
+
+                        gameAction.pause(1000);
+
+                    break;
+
+                    case "d":
+
+                        gameAction.drawCard("player");
+                        gameAction.chips -= gameAction.currentPlayerBet;
+                        gameAction.currentPlayerBet *= 2;
+                        gameAction.currentPlayerChoice = "s";
+
+                        gameAction.displayCards();
+
+                        System.out.println("The player doubled down and got " + gameAction.playerHandValues.get(gameAction.playerHandValues.size()-1) + ".");
+
+                        gameAction.pause(1000);
+
+                    break;
+
+                    case "sp":
+
+                        System.out.println("Filler split");
+
+                    break;
+
+                }
 
 
+            }
+
+            gameAction.addCardsToDisplay("dealer", "  ", "FL");
+
+            gameAction.dealerFaceUp = true;
+
+            gameAction.displayCards();
+
+            System.out.println("The dealer flips over their face down card. They have " + gameAction.dealerHandValues.get(0) + " and " + gameAction.dealerHandValues.get(1));
+
+            gameAction.pause(1000);
+
+            while(gameAction.dealerHandValue < 17 && gameAction.playerBlackjack == false && gameAction.playerHandValue <= 21){
+
+                gameAction.drawCard("dealer");
+                gameAction.displayCards();
+
+                System.out.println("The dealer hit and got " + gameAction.dealerHandValues.get(gameAction.dealerHandValues.size()-1));
+
+                gameAction.pause(1000);
+
+            }
+
+            if(gameAction.dealerBlackjack == true){
+
+                System.out.println("The dealer has blackjack. You lose this one.\n");
+
+            }
+            else if(gameAction.playerBlackjack == true){
+
+                System.out.println("You got blackjack!\n");
+                gameAction.chips += gameAction.currentPlayerBet * 3;
+
+            }
+            else if(gameAction.playerHandValue > 21){
+
+                System.out.println("You've gone and busted my good man.\n");
+
+            }
+            else if(gameAction.playerHandValue < gameAction.dealerHandValue && gameAction.dealerHandValue <= 21){
+
+                System.out.println("You lose this one.\n");
+
+            }
+            else if(gameAction.playerHandValue > gameAction.dealerHandValue || gameAction.dealerHandValue > 21){
+
+                System.out.println("You win!\n");
+                gameAction.chips += gameAction.currentPlayerBet * 2;
+
+            }
+            else{
+
+                System.out.println("It's a push.\n");
+                gameAction.chips += gameAction.currentPlayerBet;
+
+            }
+
+            gameAction.playerCardDisplay = new ArrayList<ArrayList<String>>();
+            gameAction.dealerCardDisplay = new ArrayList<ArrayList<String>>();
+
+            gameAction.playerHand = new ArrayList<String>();
+            gameAction.dealerHand = new ArrayList<String>();
+
+            gameAction.dealerHandValues = new ArrayList<Integer>();
+            gameAction.playerHandValues = new ArrayList<Integer>();
+
+            gameAction.playerHandValue = 0;
+            gameAction.dealerHandValue = 0;
+
+            gameAction.playerBlackjack = false;
+            gameAction.dealerBlackjack = false;
+
+            gameAction.plLine1 = new ArrayList<String>();
+            gameAction.plLine2 = new ArrayList<String>();
+            gameAction.plLine3 = new ArrayList<String>();
+            gameAction.plLine4 = new ArrayList<String>();
+            gameAction.plLine5 = new ArrayList<String>();
+            gameAction.plLine6 = new ArrayList<String>();
+            gameAction.plLine7 = new ArrayList<String>();
+            gameAction.plLine8 = new ArrayList<String>();
+            gameAction.plLine9 = new ArrayList<String>();
+        
+            gameAction.dlLine1 = new ArrayList<String>();
+            gameAction.dlLine2 = new ArrayList<String>();
+            gameAction.dlLine3 = new ArrayList<String>();
+            gameAction.dlLine4 = new ArrayList<String>();
+            gameAction.dlLine5 = new ArrayList<String>();
+            gameAction.dlLine6 = new ArrayList<String>();
+            gameAction.dlLine7 = new ArrayList<String>();
+            gameAction.dlLine8 = new ArrayList<String>();
+            gameAction.dlLine9 = new ArrayList<String>();
+
+            gameAction.playerAces = 0;
+            gameAction.dealerAces = 0;
+
+            gameAction.currentPlayerChoice = new String();
+
+            gameAction.dealerFaceUp = false;
+
+            gameAction.pause(600);
 
         }
-        while(gameAction.currentPlayerChoice != "q" && gameAction.chips > 0);
+        while(!gameAction.currentPlayerChoice.equals("q") && gameAction.chips > 0);
 
     } 
 

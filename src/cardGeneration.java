@@ -1,4 +1,3 @@
-
 // Card value 2 - 10 automatic generation. Char0n
 // Card presets. Tomukas10
 
@@ -13,7 +12,7 @@ class cardGeneration {
     char cardSymb = ' ';
     String[] generatedCard = {"   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "};
 
-    int[] linesGeneration = { 0, 0, 0, 0, 0 };
+
     
     String[] aceOfHearts = {
         "╭─────────╮",
@@ -30,8 +29,8 @@ class cardGeneration {
     String[] aceOfClubs = {
         "╭─────────╮",
         "│A♣  _	  │",
-        "│   /│\\	  │",
-        "│   \\│/	  │",
+        "│   /│\\	│",
+        "│   \\│/	│",
         "│  /\\│/\\  │",
         "│  \\/│\\/  │",
         "│   ─'─   │",
@@ -79,6 +78,10 @@ class cardGeneration {
     {
 
         // Set the symbol of the card
+
+        int[] linesGeneration = { 0, 0, 0, 0, 0 };
+        char cardSymb = ' ';
+        String[] generatedCard = {"   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "};
 
         switch (cardCode.toCharArray()[1]) {
 
@@ -138,6 +141,8 @@ class cardGeneration {
 
         switch (cardCode.toCharArray()[0])
         {
+            
+
 
             //First gets the preset card cases out of the way
 
