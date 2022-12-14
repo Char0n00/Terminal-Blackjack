@@ -656,7 +656,7 @@ class playerInput extends gameInformation{
         Scanner input = new Scanner(System.in);
 
         while(true)
-        {
+        {   
 
             try
             {
