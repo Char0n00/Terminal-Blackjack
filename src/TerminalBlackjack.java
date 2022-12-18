@@ -79,7 +79,7 @@ public class TerminalBlackjack {
                 
                 // Gives the player an option to split and normal moves, refuses any other input
 
-                if(gameAction.playerHandValues.get(0) == gameAction.playerHandValues.get(1)){
+                if(gameAction.playerHandValues.get(0) == gameAction.playerHandValues.get(1) && gameAction.playerHand.size() == 2){
 
                     while(true){
 
@@ -101,7 +101,7 @@ public class TerminalBlackjack {
 
                         }
 
-                        // TODO no inputs work when you can split
+                        gameAction.currentPlayerChoice = temporaryChoice;
 
                         break;
 
