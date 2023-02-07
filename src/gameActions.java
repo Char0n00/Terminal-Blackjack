@@ -471,6 +471,52 @@ class gameActions extends gameInformation{
         System.out.println("\n");
 
     }
+    void displayplayercards()
+    {
+
+        System.out.println("Player total is " + playerHandValue + ":");
+        for(int lines = 0; lines < 9; lines++)
+        {
+
+            for(int collumns = 0; collumns < plLine1.size(); collumns++){
+
+                System.out.print(playerCardDisplay.get(lines).get(collumns));
+
+            }
+
+            System.out.print("\n");
+
+        }
+
+        System.out.print("     ");
+
+        for(int i = 0; i < playerHandValues.size(); i++)
+        {
+
+            if(playerHandValues.get(i) >= 10)
+            {
+
+                System.out.print(playerHandValues.get(i) + "          ");
+
+            }
+            else{
+
+                System.out.print(playerHandValues.get(i) + "           ");
+
+            }
+
+
+
+        }
+
+        System.out.println("\n");
+
+    }
+    	
+    	
+    	
+    	
+    	
     
     
     ArrayList<String> Split0 = new ArrayList<String>();
@@ -503,3 +549,53 @@ class gameActions extends gameInformation{
    
 
 }
+
+
+
+
+
+
+
+/*
+
+	-1-  the split function takes the values of the players cards an puts them in an 2 array (splits)
+	
+	-2-  after that the new function display player cards is used after the function display cards (still a few kinks in the function to iron out) ir butinai prie displayplayercards() pridet dali kur atema is displayacrds player hand the last card kad nesidubliuotu kortos on the screen
+	
+	-3-  double the sum of money bet and add a additional check that the player even has enough money left to split
+	
+	-4-  add a total point counter for each of the hands now
+	
+	-5-  make sure to give the option to go trough each deck for the player  
+	
+	
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
