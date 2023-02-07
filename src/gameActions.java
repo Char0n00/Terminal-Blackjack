@@ -6,7 +6,8 @@ import java.util.Random;
 class gameActions extends gameInformation{
 
     // Declaring variables
-
+	
+	ArrayList<ArrayList<String>> splits = new ArrayList<ArrayList<String>>();
     Random ran = new Random();
 
     int randomSelection = 0;
@@ -470,5 +471,35 @@ class gameActions extends gameInformation{
         System.out.println("\n");
 
     }
+    
+    
+    ArrayList<String> Split0 = new ArrayList<String>();
+    ArrayList<String> Split1 = new ArrayList<String>();
+    ArrayList<String> Split2 = new ArrayList<String>();
+    
+    
+    ArrayList<String> Split00 = new ArrayList<String>();
+    ArrayList<String> Split01 = new ArrayList<String>();
+   
+    
+    
+    
+   public boolean split(List<String> playerHand)
+    
+    {
+    	if (splits.size() < 4)
+    	{
+    		Split00.add(playerHand.get(0));
+    		Split01.add(playerHand.get(1));
+    		splits.add(Split00);
+    		splits.add(Split01);
+    		Split00.clear();
+    		Split01.clear();
+    		return true;
+    	
+    	} 	
+    	return false;
+    }
+   
 
 }
